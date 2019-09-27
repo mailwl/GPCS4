@@ -1,14 +1,17 @@
 #pragma once
 
-#include "GPCS4Common.h"
+// #include "GPCS4Common.h"
 #include "PsslProgramInfo.h"
-#include "../Gve/GveShader.h"
 #include "GCNCompiler.h"
 #include "GCNDecoder.h"
-#include "GCNAnalyzer.h"
+
+#include "rend/starsha/orbital/gca/gcn_parser.h"
+#include "rend/starsha/orbital/gca/gcn_analyzer.h"
 
 namespace pssl
 {;
+
+class SpirvCodeBuffer;
 
 class PsslShaderModule
 {
@@ -21,16 +24,18 @@ public:
 
 	std::vector<InputUsageSlot> inputUsageSlots();
 
+	const PsslProgramInfo &programInfo();
+
 	PsslKey key();
 
-	RcPtr<gve::GveShader> compile();
+	SpirvCodeBuffer compile();
 
 private:
 
-	RcPtr<gve::GveShader> compileWithFS();
-	RcPtr<gve::GveShader> compileNoFS();
+	void analyzeCode();
 
-	void runAnalyzer(GCNAnalyzer& analyzer, GCNCodeSlice slice);
+	SpirvCodeBuffer compileWithFS();
+	SpirvCodeBuffer compileNoFS();
 
 	void runCompiler(GCNCompiler& compiler, GCNCodeSlice slice);
 
@@ -47,6 +52,9 @@ private:
 	PsslProgramInfo m_progInfo;
 
 	std::vector<VertexInputSemantic> m_vsInputSemantic;
+
+	gcn_parser_t m_parser{};
+	gcn_analyzer_t m_analyzer{};
 };
 
 

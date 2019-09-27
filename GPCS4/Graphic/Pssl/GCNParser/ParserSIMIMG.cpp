@@ -208,7 +208,7 @@ ParserSIMIMG::Parse(GDT_HW_GENERATION hwGen, Instruction::instruction64bit hexIn
 
 ParserSI::kaStatus ParserSIMIMG::Parse(GDT_HW_GENERATION hwGen, Instruction::instruction32bit hexInstruction, std::unique_ptr<Instruction>& instruction, bool& hasLiteral)
 {
-	hasLiteral = false;
+    hasLiteral = false;
     return ParserSI::Status_32BitInstructionNotSupported;
 }
 

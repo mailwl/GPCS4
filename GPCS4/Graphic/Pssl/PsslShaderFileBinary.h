@@ -1,6 +1,8 @@
 #pragma once
 
-#include "GPCS4Common.h"
+// #include "GPCS4Common.h"
+
+#include <cstdint>
 
 
 // only place shader binary file related structures

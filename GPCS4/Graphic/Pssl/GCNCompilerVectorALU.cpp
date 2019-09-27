@@ -95,7 +95,22 @@ void GCNCompiler::emitVectorALU(GCNInstruction& ins)
 
 void GCNCompiler::emitVectorRegMov(GCNInstruction& ins)
 {
+	const auto i = asInstruction<SIVOP1Instruction>(ins);
 
+	switch (i->GetOp())
+	{
+	case SIVOP1Instruction::V_MOV_B32:
+	{
+		const auto src0 = loadSSrc(i->GetSRC0(), i->GetSRidx0());
+		const auto vDst = loadVgpr(i->GetVDSTRidx());
+
+		m_module.opStore(vDst.varId, src0.varId);
+		break;
+	}
+	default:
+		unimplemented();
+		break;
+	}
 }
 
 void GCNCompiler::emitVectorLane(GCNInstruction& ins)
@@ -125,7 +140,73 @@ void GCNCompiler::emitVectorBitField64(GCNInstruction& ins)
 
 void GCNCompiler::emitVectorFpArith32(GCNInstruction& ins)
 {
+	const auto i = asInstruction<VOPInstruction>(ins);
 
+	SpirvValue src0;
+	SpirvValue src1;
+	SpirvValue dst;
+
+	s32 op{};
+
+	switch(ins.instruction->GetInstructionFormat()) {
+	// case VOPInstruction::Encoding_VOP1: break;
+	case Instruction::InstructionSet_VOP2: {
+		const auto iVop2 = asInstruction<SIVOP2Instruction>(ins);
+
+		src0 = loadSSrc(iVop2->GetSRC0(), iVop2->GetSRidx0());
+		src1 = loadVgpr(iVop2->GetVSRC1Ridx());
+		dst = loadVgpr(iVop2->GetVDSTRidx());
+
+		op = iVop2->GetOp();
+
+		break;
+	}
+	case Instruction::InstructionSet_VOP3: {
+		const auto iVop3 = asInstruction<SIVOP3Instruction>(ins);
+
+		src0 = loadSSrc(iVop3->GetSRC0(), 0xFFFFFFFF);
+		src1 = loadSSrc(iVop3->GetSRC1(), 0xFFFFFFFF);
+		dst = loadVgpr(iVop3->GetVDST());
+
+		op = iVop3->GetOp();
+
+		break;
+	}
+	// case VOPInstruction::Encoding_VOPC: break;
+	// case VOPInstruction::Encoding_VOP3P: break;
+	// case VOPInstruction::Encoding_Illegal: break;
+	default:
+		error("unimplemented instruction format");
+		return;
+	}
+
+	const auto src0F32 = asFloat(src0.varId);
+	const auto vSrc1F32 = asFloat(src1.varId);
+	const auto dstF32 = asFloat(dst.varId);
+
+	switch(op) {
+	case SIVOP2Instruction::V_MUL_F32:
+	case SIVOP3Instruction::V3_MUL_F32: {
+		const auto result = asUint32(m_module.opFMul(m_typeF32, src0F32, vSrc1F32));
+
+		m_module.opStore(dst.varId, result);
+		break;
+	}
+	case SIVOP2Instruction::V_MAC_F32:
+	case SIVOP3Instruction::V3_MAC_F32: {
+		const auto result = asUint32(
+			m_module.opFAdd(m_typeF32,
+				m_module.opFMul(m_typeF32, src0F32, vSrc1F32),
+				dstF32)
+		);
+
+		m_module.opStore(dst.varId, result);
+		break;
+	}
+	default:
+		error("unimplemented op: {:#x}", op);
+		break;
+	}
 }
 
 void GCNCompiler::emitVectorFpRound32(GCNInstruction& ins)

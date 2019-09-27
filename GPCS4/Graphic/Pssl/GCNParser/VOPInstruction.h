@@ -91,10 +91,10 @@ public:
     /// \param[in]          instructionType
     /// \return
     /// -----------------------------------------------------------------------------------------------
-    VOPInstruction(SRC src0, VDST vdst, 
+    VOPInstruction(SRC src0, VDST vdst,
 		unsigned int ridx0, unsigned int vdstRidx,
-		unsigned int instructionWidth, 
-		InstructionSet instructionEncoding, InstructionClass insClass = InstructionClassUnknown) : 
+		unsigned int instructionWidth,
+		InstructionSet instructionEncoding, InstructionClass insClass = InstructionClassUnknown) :
 		Instruction(instructionWidth, VectorALU, instructionEncoding, insClass),
 	m_src0(src0), m_vdst(vdst), m_ridx0(ridx0), m_vdstRidx(vdstRidx) { }
     /// -----------------------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ public:
 
 
     /// -----------------------------------------------------------------------------------------------
-    SIVOP1Instruction(SRC src0, VDST vdst, 
+    SIVOP1Instruction(SRC src0, VDST vdst,
 		unsigned int ridx0, unsigned int vdstRidx,
 		unsigned int instructionWidth, Encoding instructionEncoding, VOP1_OP op,
 		InstructionClass insClass = InstructionClassUnknown) :
@@ -371,7 +371,7 @@ public:
 
 
     /// -----------------------------------------------------------------------------------------------
-    SIVOP2Instruction(SRC src0, VSRC vsrc1, VDST vdst, 
+    SIVOP2Instruction(SRC src0, VSRC vsrc1, VDST vdst,
 		unsigned int ridx0, unsigned int vridx1, unsigned int vdstRidx,
 		unsigned int instructionWidth, Encoding instructionEncoding, VOP2_OP op,
 		InstructionClass insClass) :
@@ -383,6 +383,10 @@ public:
 
     /// Get the OP
     VOP2_OP GetOp() const { return m_op; }
+
+	VSRC GetVSRC1() const { return m_vsrc1; }
+
+	unsigned int GetVSRC1Ridx() const { return m_vridx1; }
 
     // return the instruction encoding
     Encoding GetInstructionType() const { return m_instructionEncoding; }
@@ -810,10 +814,10 @@ public:
 
     /// -----------------------------------------------------------------------------------------------
     SIVOP3Instruction(SRC src0, SRC src1, SRC src2, VDST vdst, SDST sdst,
-		unsigned int ridx0, unsigned int ridx1, unsigned int ridx2, 
+		unsigned int ridx0, unsigned int ridx1, unsigned int ridx2,
 		unsigned int vdstRidx, unsigned int sdstRidx,
 		CLMP clmp, ABS abs, NEG neg, OMOD omod,
-		unsigned int instructionWidth, Encoding instructionEncoding, VOP3_OP op) : 
+		unsigned int instructionWidth, Encoding instructionEncoding, VOP3_OP op) :
 		VOPInstruction(src0, vdst, ridx0, vdstRidx, instructionWidth, InstructionSet_VOP3),
 		m_op(op), m_instructionEncoding(instructionEncoding),
 		m_src1(src1), m_src2(src2), m_sdst(sdst),
@@ -1519,10 +1523,10 @@ public:
     };
 
     /// -----------------------------------------------------------------------------------------------
-    SIVOPCInstruction(SRC src0, VSRC vsrc1, 
+    SIVOPCInstruction(SRC src0, VSRC vsrc1,
 		unsigned int ridx0, unsigned int vsrcRidx,
 		unsigned int instructionWidth, Encoding instructionEncoding, VOPC_OP op) :
-		VOPInstruction(src0, vsrc1, ridx0, vsrcRidx, instructionWidth, InstructionSet_VOPC), 
+		VOPInstruction(src0, vsrc1, ridx0, vsrcRidx, instructionWidth, InstructionSet_VOPC),
 		m_op(op), m_instructionEncoding(instructionEncoding) { }
     /// -----------------------------------------------------------------------------------------------
 

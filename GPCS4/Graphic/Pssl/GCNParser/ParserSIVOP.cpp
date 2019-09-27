@@ -172,7 +172,7 @@ ParserSI::kaStatus ParserSIVOP::Parse(GDT_HW_GENERATION hwGen, Instruction::inst
         }
         else if (VOPInstruction::Encoding_VOP2 == encoding)
         {
-            uint64_t hexInstTem = hexInstruction << 1;
+			uint64_t hexInstTem = hexInstruction << 1;
             hexInstTem = hexInstTem >> 26;
             SIVOP2Instruction::VOP2_OP op2 = static_cast<SIVOP2Instruction::VOP2_OP>(hexInstTem);
 			unsigned int vidx1 = 0 ,vdstRidx = 0;;
@@ -188,8 +188,8 @@ ParserSI::kaStatus ParserSIVOP::Parse(GDT_HW_GENERATION hwGen, Instruction::inst
 
         else if (VOPInstruction::Encoding_VOPC == encoding)
         {
-            uint64_t hexInstTem = hexInstruction << 7;
-            hexInstTem = hexInstTem >> 24;
+			uint64_t hexInstTem = hexInstruction << 7;
+			hexInstTem = hexInstTem >> 24;
             SIVOPCInstruction::VOPC_OP opc = static_cast<SIVOPCInstruction::VOPC_OP>(hexInstTem);
 			unsigned int vidx1 = 0;
 			VOPInstruction::VSRC vsrc1 = GetVSRC1(hexInstruction, vidx1);
@@ -211,8 +211,8 @@ ParserSI::kaStatus ParserSIVOP::Parse(GDT_HW_GENERATION hwGen, Instruction::inst
         }
         else if (VOPInstruction::Encoding_VOP2 == encoding)
         {
-            uint64_t hexInstTem = hexInstruction << 1;
-            hexInstTem = hexInstTem >> 26;
+			uint64_t hexInstTem = hexInstruction << 1;
+			hexInstTem = hexInstTem >> 26;
             VIVOP2Instruction::VOP2_OP op2 = static_cast<VIVOP2Instruction::VOP2_OP>(hexInstTem);
 			// TODO:
 			// Not sure if there's some special opcode which use literal const while src != SRCLiteralConst
@@ -223,8 +223,8 @@ ParserSI::kaStatus ParserSIVOP::Parse(GDT_HW_GENERATION hwGen, Instruction::inst
 
         else if (VOPInstruction::Encoding_VOPC == encoding)
         {
-            uint64_t hexInstTem = hexInstruction << 7;
-            hexInstTem = hexInstTem >> 24;
+			uint64_t hexInstTem = hexInstruction << 7;
+			hexInstTem = hexInstTem >> 24;
             VIVOPCInstruction::VOPC_OP opc = static_cast<VIVOPCInstruction::VOPC_OP>(hexInstTem);
 			hasLiteral = (src0 == VIVOPCInstruction::SRCLiteralConst);
             instruction = std::make_unique<VIVOPCInstruction>(32, encoding, opc);
@@ -244,8 +244,8 @@ ParserSI::kaStatus ParserSIVOP::Parse(GDT_HW_GENERATION hwGen, Instruction::inst
         }
         else if (VOPInstruction::Encoding_VOP2 == encoding)
         {
-            uint64_t hexInstTem = hexInstruction << 1;
-            hexInstTem = hexInstTem >> 26;
+			uint64_t hexInstTem = hexInstruction << 1;
+			hexInstTem = hexInstTem >> 26;
             G9VOP2Instruction::VOP2_OP op2 = static_cast<G9VOP2Instruction::VOP2_OP>(hexInstTem);
 			// TODO:
 			// Not sure if there's some special opcode which use literal const while src != SRCLiteralConst
@@ -256,8 +256,8 @@ ParserSI::kaStatus ParserSIVOP::Parse(GDT_HW_GENERATION hwGen, Instruction::inst
 
         else if (VOPInstruction::Encoding_VOPC == encoding)
         {
-            uint64_t hexInstTem = hexInstruction << 7;
-            hexInstTem = hexInstTem >> 24;
+			uint64_t hexInstTem = hexInstruction << 7;
+			hexInstTem = hexInstTem >> 24;
             VIVOPCInstruction::VOPC_OP opc = static_cast<VIVOPCInstruction::VOPC_OP>(hexInstTem);
 			hasLiteral = (src0 == VIVOPCInstruction::SRCLiteralConst);
             instruction = std::make_unique<VIVOPCInstruction>(32, encoding, opc);
@@ -285,8 +285,8 @@ ParserSIVOP::Parse(GDT_HW_GENERATION hwGen, Instruction::instruction64bit hexIns
     {
         if (VOPInstruction::Encoding_VOP3 == encoding)
         {
-            uint64_t hexInstTem = hexInstruction << 6;
-            hexInstTem = hexInstTem >> 22;
+            uint64_t hexInstTem = hexInstruction << 15;
+            hexInstTem = hexInstTem >> 24;
             SIVOP3Instruction::VOP3_OP op3 = static_cast<SIVOP3Instruction::VOP3_OP>(hexInstTem);
 
 			unsigned int ridx1 = 0, ridx2 = 0;
@@ -364,7 +364,7 @@ ParserSIVOP::GetInstructionType(Instruction::instruction32bit hexInstruction)
 VOPInstruction::Encoding
 ParserSIVOP::GetInstructionType(Instruction::instruction64bit hexInstruction)
 {
-    if ((hexInstruction & VOPInstruction::VOPMask_VOP3) >> 26 == VOPInstruction::Encoding_VOP3)
+    if ((hexInstruction && VOPInstruction::VOPMask_VOP3) >> 26 == VOPInstruction::Encoding_VOP3)
     {
         return VOPInstruction::Encoding_VOP3;
     }

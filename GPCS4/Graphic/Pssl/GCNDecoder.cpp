@@ -1,4 +1,5 @@
 #include "GCNDecoder.h"
+#include "GPCS4Log.h"
 
 
 namespace pssl

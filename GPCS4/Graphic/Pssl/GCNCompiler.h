@@ -1,10 +1,9 @@
 #pragma once
 
-#include "GPCS4Common.h"
+// #include "GPCS4Common.h"
 #include "PsslProgramInfo.h"
 #include "PsslFetchShader.h"
 #include "GCNInstruction.h"
-#include "GCNAnalyzer.h"
 
 #include "GCNParser/SMRDInstruction.h"
 #include "GCNParser/SOPPInstruction.h"
@@ -20,212 +19,131 @@
 #include "GCNParser/EXPInstruction.h"
 #include "GCNParser/VOPInstruction.h"
 
-#include "../Gve/GveShader.h"
+// #include "../Gve/GveShader.h"
 #include "../SpirV/SpirvModule.h"
 
 #include <optional>
+#include <map>
+
+#define ARRAYCOUNT(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
 namespace pssl
-{;
-
-/**
- * \brief Scalar value type
- *
- * Enumerates possible register component
- * types. Scalar types are represented as
- * a one-component vector type.
- */
-enum PsslScalarType : uint32_t
 {
-	Uint32 = 0,
-	Uint64 = 1,
-	Sint32 = 2,
-	Sint64 = 3,
-	Float32 = 4,
-	Float64 = 5,
-	Bool = 6,
+
+constexpr size_t MAX_COUNT_VGPR = 256;
+constexpr size_t MAX_COUNT_SGPR = 103;
+constexpr size_t MAX_COUNT_ATTR = 32;
+
+
+constexpr spv::Id spvIdInvalid = 0; // TODO: Is this right?
+
+struct SpirvValue {
+	constexpr SpirvValue() : typeId(spvIdInvalid), varId(spvIdInvalid) {}
+	SpirvValue(spv::Id typeId, spv::Id varId) : typeId(typeId), varId(varId) {
+		assert(isValid());
+	}
+
+	bool isValid() const { return typeId != spvIdInvalid && varId != spvIdInvalid; }
+
+	spv::Id typeId{ spvIdInvalid };
+	spv::Id varId{ spvIdInvalid };
 };
 
-/**
- * \brief Vector type
- *
- * Convenience struct that stores a scalar
- * type and a component count. The compiler
- * can use this to generate SPIR-V types.
- */
-struct PsslVectorType 
-{
-	PsslScalarType    ctype;
-	uint32_t          ccount;
+constexpr SpirvValue spvValueInvalid = SpirvValue();
+
+enum class GprType {
+	Scalar,
+	Vector
 };
 
-
-/**
- * \brief Array type
- *
- * Convenience struct that stores a scalar type, a
- * component count and an array size. An array of
- * length 0 will be evaluated to a vector type. The
- * compiler can use this to generate SPIR-V types.
- */
-struct PsslArrayType 
-{
-	PsslScalarType    ctype;
-	uint32_t          ccount;
-	uint32_t          alength;
+enum class GprSize {
+	Size32,
+	Size64
 };
-
-
-struct GcnStateRegister
-{
-	// local data share
-	uint64_t lds = 0;
-	// exec mask
-	uint64_t exec = 0;
-	// vector condition code
-	uint64_t vcc = 0;
-	// mode register
-	uint32_t mode = 0;
-	// memory descriptor register
-	uint32_t m0 = 0;
-};
-
-/**
- * \brief Vertex shader-specific structure
- */
-struct GcnCompilerVsPart {
-	uint32_t functionId = 0;
-
-	uint32_t builtinVertexId = 0;
-	uint32_t builtinInstanceId = 0;
-	uint32_t builtinBaseVertex = 0;
-	uint32_t builtinBaseInstance = 0;
-};
-
-
-/**
- * \brief Pixel shader-specific structure
- */
-struct GcnCompilerPsPart {
-	uint32_t functionId = 0;
-
-	uint32_t builtinFragCoord = 0;
-	uint32_t builtinDepth = 0;
-	uint32_t builtinIsFrontFace = 0;
-	uint32_t builtinSampleId = 0;
-	uint32_t builtinSampleMaskIn = 0;
-	uint32_t builtinSampleMaskOut = 0;
-	uint32_t builtinLayer = 0;
-	uint32_t builtinViewportId = 0;
-
-	uint32_t builtinLaneId = 0;
-	uint32_t killState = 0;
-
-	uint32_t specRsSampleCount = 0;
-};
-
-
-/**
- * \brief Compute shader-specific structure
- */
-struct GcnCompilerCsPart {
-	uint32_t functionId = 0;
-
-	uint32_t workgroupSizeX = 0;
-	uint32_t workgroupSizeY = 0;
-	uint32_t workgroupSizeZ = 0;
-
-	uint32_t builtinGlobalInvocationId = 0;
-	uint32_t builtinLocalInvocationId = 0;
-	uint32_t builtinLocalInvocationIndex = 0;
-	uint32_t builtinWorkgroupId = 0;
-};
-
 
 class GCNCompiler
 {
 public:
-	GCNCompiler(const PsslProgramInfo& progInfo, const GcnAnalysisInfo& analysis);
-	GCNCompiler(const PsslProgramInfo& progInfo, const GcnAnalysisInfo& analysis, const std::vector<VertexInputSemantic>& inputSemantic);
-	~GCNCompiler();
+	GCNCompiler(const PsslProgramInfo& progInfo);
+	GCNCompiler(const PsslProgramInfo& programInfo, const std::vector<VertexInputSemantic>& inputSemantic);
+	~GCNCompiler() = default;
+	void initVgprs();
 
 	void processInstruction(GCNInstruction& ins);
 
-	RcPtr<gve::GveShader> finalize();
-
+	SpirvCodeBuffer finalize();
 
 private:
+	using GprId = u8;
+	using AttrId = u8;
+	using ParamId = u8;
+	using VertexSemantic = u8;
 
-	PsslProgramInfo m_programInfo;
-
-	std::vector<VertexInputSemantic> m_vsInputSemantic;
-
+private:
 	SpirvModule m_module;
 
-	// Global analyze information
-	const GcnAnalysisInfo* m_analysis;
+	// Basic SPIR-V types
+	const spv::Id m_typeU32;
+	const spv::Id m_typeU64;
+	const spv::Id m_typeF32;
+	const spv::Id m_typeVec2;
+	const spv::Id m_typeVec3;
+	const spv::Id m_typeVec4;
 
-	///////////////////////////////////////////////////
-	// Entry point description - we'll need to declare
-	// the function ID and all input/output variables.
-	std::vector<uint32_t> m_entryPointInterfaces;
-	uint32_t              m_entryPointId = 0;
+	const spv::Id m_typeGpr;
+	const spv::Id m_typePtrGpr;
 
-	////////////////////////////////////////////////////
-	// Per-vertex input and output blocks. Depending on
-	// the shader stage, these may be declared as arrays.
-	uint32_t m_perVertexIn = 0;
-	uint32_t m_perVertexOut = 0;
+	const spv::Id m_typeVertexBuffer;
+	const spv::Id m_typePtrVertexBuffer;
 
+	GCNInstruction* m_currentInstruction{};
+	SpirvCodeBuffer m_compiledCode;
+	PsslProgramInfo m_programInfo;
 
-	//////////////////////////////////////////////
-	// Function state tracking. Required in order
-	// to properly end functions in some cases.
-	bool m_insideFunction = false;
+	// Shader resources
+	std::vector<SpirvValue> m_vertexResources;
+	std::vector<SpirvValue> m_textureResources;
+	std::vector<SpirvValue> m_samplerResources;
+	u32 m_vertexResourceIndex{};
+	u32 m_textureResourceIndex{};
+	u32 m_samplerResourceIndex{};
 
+	// General purpose registers
+	std::map<GprId, SpirvValue> m_vgprs;
+	std::map<GprId, SpirvValue> m_sgprs;
 
-	///////////////////////////////////
-	// Shader-specific data structures
-	GcnCompilerVsPart m_vs;
-	GcnCompilerPsPart m_ps;
-	GcnCompilerCsPart m_cs;
+	// Status/mask registers
+	SpirvValue m_vcc{};
+	SpirvValue m_vccLo{}; // TODO: should be part of vcc
+	SpirvValue m_vccHi{}; // TODO: should be part of vcc
+	SpirvValue m_m0{};
+	SpirvValue m_exec{};
 
-	///////////////////////////////////
-	// State registers
-	GcnStateRegister m_stateRegs;
+	// Entry point description
+	std::vector<spv::Id> m_entryPointInterfaces;
+	spv::Id m_entryPointId = 0;
+
+	// Vertex input and outputs
+	std::map<VertexSemantic, SpirvValue> m_vsInputs;
+	std::map<std::string, SpirvValue> m_vsBuiltin;
+	SpirvValue m_vsOutputPos{};
+	std::map<ParamId, SpirvValue> m_vsOutputParams;
+	std::vector<VertexInputSemantic> m_vsInputSemantics;
+
+	// Fragment inputs and outputs
+	std::map<AttrId, SpirvValue> m_psInputAttrs;
+
+	bool m_insideFunction{};
 
 private:
-
 	void emitInit();
-	/////////////////////////////////
-	// Shader initialization methods
+
 	void emitVsInit();
 	void emitHsInit();
 	void emitDsInit();
 	void emitGsInit();
 	void emitPsInit();
 	void emitCsInit();
-
-	///////////////////////////////
-	// Shader finalization methods
-	void emitVsFinalize();
-	void emitHsFinalize();
-	void emitDsFinalize();
-	void emitGsFinalize();
-	void emitPsFinalize();
-	void emitCsFinalize();
-
-	void emitFunctionBegin(
-		uint32_t                entryPoint,
-		uint32_t                returnType,
-		uint32_t                funcType);
-
-	void emitFunctionEnd();
-
-	void emitMainFunctionBegin();
-
-	void emitFunctionLabel();
-
 
 	// Category handlers
 	void emitScalarALU(GCNInstruction& ins);
@@ -327,20 +245,69 @@ private:
 	// DebugProfile
 	void emitDbgProf(GCNInstruction& ins);
 
-	/////////////////////////////////////////////////////////
+	//////////////
+	// Misc stuff
+	void emitDclInputArray(
+		uint32_t          vertexCount);
 
+	void emitDclInputPerVertex(
+		uint32_t          vertexCount,
+		const char*             varName);
 
-	// Convenient functions to dynamic cast instruction types
-	template <typename InsType>
-	inline InsType* castTo(GCNInstruction& ins)
+	uint32_t emitDclClipCullDistanceArray(
+		uint32_t          length,
+		spv::BuiltIn      builtIn,
+		spv::StorageClass storageClass);
+
+	void emitFunctionLabel();
+	void emitFunctionBegin(u32 entryPoint, u32 returnType, u32 funcType);
+	void emitMainFunctionBegin();
+	void emitFunctionEnd();
+
+	void emitVsFinalize();
+	void emitPsFinalize();
+
+	SpirvValue createUint32(const std::string& name);
+	SpirvValue createUint64(const std::string& name);
+	SpirvValue createIntScalar(const std::string& name, u32 width, bool isSigned, spv::StorageClass storageClass = spv::StorageClassFunction, std::optional<u32> initConstValue = std::nullopt);
+	SpirvValue createIntVector(const std::string& name, u32 size, u32 width, bool isSigned, spv::StorageClass storageClass = spv::StorageClassFunction);
+	SpirvValue createFloatVector(const std::string& name, u32 size, u32 width, spv::StorageClass storageClass = spv::StorageClassFunction);
+
+	SpirvValue loadGprValue(const SpirvValue &valGpr);
+	SpirvValue loadVgpr(u32 regIndex);
+	SpirvValue loadSgpr(u32 regIndex);
+	SpirvValue loadAttr(AttrId attrIndex);
+	SpirvValue loadOperand(int sOperand, u32 regIndex, GprType gprType, GprSize size = GprSize::Size32);
+	SpirvValue loadSSrc(int sSrc, u32 regIndex, GprSize size = GprSize::Size32);
+	SpirvValue loadSDst(int sDst, u32 regIndex, GprSize size = GprSize::Size32);
+	SpirvValue loadVSrc(int vSrc, u32 regIndex, GprSize size = GprSize::Size32);
+	SpirvValue loadVDst(int vDst, u32 regIndex, GprSize size = GprSize::Size32);
+
+	void storeSgpr(u32 index, spv::Id value);
+
+	// spv::Id floatToUint(spv::Id var);
+
+	SpirvValue loadValue(SpirvValue val);
+
+	SpirvValue asUint32(SpirvValue val);
+	spv::Id asUint32(spv::Id var);
+	SpirvValue loadAsUint32(SpirvValue val);
+	SpirvValue asUint64(SpirvValue val);
+	spv::Id asUint64(spv::Id var);
+	SpirvValue loadAsUint64(SpirvValue val);
+	SpirvValue asFloat(SpirvValue val);
+	spv::Id asFloat(spv::Id var);
+	SpirvValue loadAsFloat(SpirvValue val);
+
+	// Convenience function to dynamic cast instruction types
+	template<typename I>
+	typename std::enable_if<std::is_base_of<Instruction, I>::value, const I*>::type
+	asInstruction(const GCNInstruction& ins)
 	{
-		return dynamic_cast<InsType*>(ins.instruction.get());
+		const I* i = dynamic_cast<const I*>(ins.instruction.get());
+		assert(i);
+		return i;
 	}
-
-	///////////////////////////
-	// Type definition methods
-	uint32_t getPerVertexBlockId();
-
 };
 
 

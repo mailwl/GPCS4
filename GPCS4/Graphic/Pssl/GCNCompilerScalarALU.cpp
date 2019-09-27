@@ -1,4 +1,5 @@
 #include "GCNCompiler.h"
+#include "GCNParser/Instruction.h"
 #include "GCNParser/SOP1Instruction.h"
 
 namespace pssl
@@ -53,10 +54,6 @@ void GCNCompiler::emitScalarALU(GCNInstruction& ins)
 	}
 }
 
-void GCNCompiler::emitScalarMov(GCNInstruction& ins)
-{
-
-}
 
 void GCNCompiler::emitScalarArith(GCNInstruction& ins)
 {
@@ -66,6 +63,28 @@ void GCNCompiler::emitScalarArith(GCNInstruction& ins)
 void GCNCompiler::emitScalarAbs(GCNInstruction& ins)
 {
 
+}
+
+void GCNCompiler::emitScalarMov(GCNInstruction& ins)
+{
+	const auto i = asInstruction<SISOP1Instruction>(ins);
+	const auto op = i->GetOp();
+
+	switch(op) {
+		case SISOP1Instruction::S_MOV_B32:
+		case SISOP1Instruction::S_MOV_B64: {
+			const auto size = (op == SISOP1Instruction::S_MOV_B32) ? GprSize::Size32 : GprSize::Size64;
+
+			const auto sSrc0 = loadSSrc(i->GetSSRC0(), i->GetSRidx(), size);
+			const auto sDst = loadSDst(i->GetSDST(), i->GetSDSTRidx(), size);
+
+			m_module.opStore(sDst.varId, sSrc0.varId);
+			break;
+		}
+		default:
+			error("unimplemented op: {:#x}", (u32)i->GetOp());
+			break;
+	}
 }
 
 void GCNCompiler::emitScalarCmp(GCNInstruction& ins)

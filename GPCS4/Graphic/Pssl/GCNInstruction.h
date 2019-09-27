@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GPCS4Common.h"
+// #include "GPCS4Common.h"
 #include "GCNParser/Instruction.h"
 
 namespace pssl

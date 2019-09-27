@@ -3,7 +3,7 @@
 
 #ifdef GPCS4_DEBUG
 // Dump shader to file
-#define PSSL_DUMP_SHADER
+// #define GPCS4_DUMP_SHADER
 #endif
 
 
@@ -18,7 +18,7 @@ PsslShaderModule::PsslShaderModule(const uint32_t* code):
 	m_progInfo((const uint8_t*)code)
 {
 #ifdef GPCS4_DUMP_SHADER
-	dumpShader(m_progInfo.shaderType(), (const uint8_t*)code, m_progInfo.codeSizeBytes());
+	dumpShader(m_progInfo.getShaderType(), (const uint8_t*)code, m_progInfo.getCodeSizeBytes());
 #endif  // GPCS4_DUMP_SHADER
 }
 
@@ -34,36 +34,56 @@ PsslShaderModule::~PsslShaderModule()
 }
 
 
-RcPtr<gve::GveShader> PsslShaderModule::compile()
+SpirvCodeBuffer PsslShaderModule::compile()
 {
-	return m_vsInputSemantic.size() ? compileWithFS() : compileNoFS();
+	analyzeCode();
+	return m_vsInputSemantic.empty() ? compileNoFS() : compileWithFS();
 }
 
-RcPtr<gve::GveShader> PsslShaderModule::compileWithFS()
-{
-	const uint32_t* codeEnd = m_code + m_progInfo.codeSizeDwords();
+void PsslShaderModule::analyzeCode() {
+	// HACK: use orbital's analyzer for now
+
+	gcn_parser_init(&m_parser);
+	gcn_analyzer_init(&m_analyzer);
+	gcn_parser_parse(&m_parser, (u8*)m_code, &gcn_analyzer_callbacks, &m_analyzer);
+
+	gcn_analyzer_print(&m_analyzer, stdout);
+	m_progInfo.m_orbitalAnalyzer = &m_analyzer;
+
+	/*
+	const uint32_t* codeEnd = m_code + m_progInfo.getCodeSizeDwords();
 	GCNCodeSlice codeSlice(m_code, codeEnd);
 
-	GcnAnalysisInfo analysisInfo;
-	GCNAnalyzer analyzer(analysisInfo);
-	this->runAnalyzer(analyzer, codeSlice);
+	GCNDecodeContext decoder;
 
-	GCNCompiler compiler(m_progInfo, analysisInfo, m_vsInputSemantic);
+	while (!codeSlice.atEnd())
+	{
+		decoder.decodeInstruction(codeSlice);
+
+		m_progInfo.analyzeInstruction(decoder.getInstruction());
+	}
+	*/
+}
+
+SpirvCodeBuffer PsslShaderModule::compileWithFS()
+{
+	const uint32_t* codeEnd = m_code + m_progInfo.getCodeSizeDwords();
+	GCNCodeSlice codeSlice(m_code, codeEnd);
+
+	GCNCompiler compiler(m_progInfo, m_vsInputSemantic);
 	runCompiler(compiler, codeSlice);
+
 	return compiler.finalize();
 }
 
-RcPtr<gve::GveShader> PsslShaderModule::compileNoFS()
+SpirvCodeBuffer PsslShaderModule::compileNoFS()
 {
-	const uint32_t* codeEnd = m_code + m_progInfo.codeSizeDwords();
+	const uint32_t* codeEnd = m_code + m_progInfo.getCodeSizeDwords();
 	GCNCodeSlice codeSlice(m_code, codeEnd);
 
-	GcnAnalysisInfo analysisInfo;
-	GCNAnalyzer analyzer(analysisInfo);
-	this->runAnalyzer(analyzer, codeSlice);
-
-	GCNCompiler compiler(m_progInfo, analysisInfo);
+	GCNCompiler compiler(m_progInfo);
 	runCompiler(compiler, codeSlice);
+
 	return compiler.finalize();
 }
 
@@ -170,28 +190,15 @@ void PsslShaderModule::dumpShader(PsslProgramType type, const uint8_t* code, uin
 		break;
 	}
 
-	sprintf_s(filename, 64, format, m_progInfo.key().toUint64());
+	sprintf_s(filename, 64, format, m_progInfo.getKey().getKey());
 	UtilFile::StoreFile(filename, code, size);
-
-}
-
-void PsslShaderModule::runAnalyzer(GCNAnalyzer& analyzer, GCNCodeSlice slice)
-{
-	GCNDecodeContext decoder;
-
-	while (!slice.atEnd())
-	{
-		decoder.decodeInstruction(slice);
-
-		analyzer.processInstruction(decoder.getInstruction());
-	}
 }
 
 void PsslShaderModule::runCompiler(GCNCompiler& compiler, GCNCodeSlice slice)
 {
 	GCNDecodeContext decoder;
 
-	while (!slice.atEnd()) 
+	while (!slice.atEnd())
 	{
 		decoder.decodeInstruction(slice);
 
@@ -201,17 +208,21 @@ void PsslShaderModule::runCompiler(GCNCompiler& compiler, GCNCodeSlice slice)
 
 std::vector<InputUsageSlot> PsslShaderModule::inputUsageSlots()
 {
-	return m_progInfo.inputUsageSlot();
+	return m_progInfo.getInputUsageSlots();
 }
 
 pssl::PsslKey PsslShaderModule::key()
 {
-	return m_progInfo.key();
+	return m_progInfo.getKey();
 }
 
 std::vector<VertexInputSemantic> PsslShaderModule::vsInputSemantic()
 {
 	return m_vsInputSemantic;
+}
+
+const PsslProgramInfo& PsslShaderModule::programInfo() {
+	return m_progInfo;
 }
 
 }  // namespace pssl

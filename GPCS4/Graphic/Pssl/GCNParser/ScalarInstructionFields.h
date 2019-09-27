@@ -107,5 +107,8 @@ X_INIT(ConstZero, 128),
        X(ConstFloatNeg_4_0),
        /// Literal constant.
        X_INIT(LiteralConst, 255),
+       X_INIT(VectorGPRMin, 256),
+       X(VectorGPR),
+       X_INIT(VectorGPRMax, 511),
 
 

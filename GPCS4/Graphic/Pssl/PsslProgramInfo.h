@@ -1,15 +1,17 @@
 #pragma once
 
-#include "GPCS4Common.h"
+#include "base.h"
+// #include "GPCS4Common.h"
 #include "PsslShaderStructure.h"
 #include "PsslEnums.h"
 #include "PsslKey.h"
-#include "vulkan/vulkan.h"
-#include "../SpirV/spirv.hpp"
+
+struct gcn_analyzer_t;
 
 namespace pssl
 {;
 
+struct GCNInstruction;
 
 class PsslProgramInfo
 {
@@ -17,34 +19,34 @@ public:
 	PsslProgramInfo(const uint8_t* code);
 	~PsslProgramInfo();
 
-	uint32_t codeSizeBytes() const;
+	uint32_t getCodeSizeBytes() const;
 
-	uint32_t codeSizeDwords() const;
+	uint32_t getCodeSizeDwords() const;
 
 	bool hasFetchShader();
 
-	PsslProgramType shaderType() const;
+	PsslProgramType getShaderType() const;
 
-	PsslKey key() const;
+	PsslKey getKey() const;
 
-	uint32_t inputUsageSlotCount() const;
+	uint32_t getInputUsageSlotCount() const;
 
-	const InputUsageSlot* inputUsageSlot(uint32_t idx) const;
+	const InputUsageSlot* getInputUsageSlot(uint32_t idx) const;
 
-	std::vector<InputUsageSlot> inputUsageSlot() const;
+	std::vector<InputUsageSlot> getInputUsageSlots() const;
 
-	VkShaderStageFlagBits shaderStage() const;
+	void analyzeInstruction(const GCNInstruction& instruction);
 
-	spv::ExecutionModel executionModel() const;
+	gcn_analyzer_t* m_orbitalAnalyzer;
 
 private:
 	bool initBinaryInfo(const uint8_t* code);
-	bool initShaderType();
 
 private:
 	ShaderBinaryInfo m_shaderBinaryInfo;
 	std::vector<InputUsageSlot> m_inputUsageSlots;
-	PsslProgramType m_type;
+
+	const uint32_t* m_code;
 };
 
 // return UINT_MAX means no fetch shader

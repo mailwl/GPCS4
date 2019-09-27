@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GPCS4Common.h"
+// #include "GPCS4Common.h"
 #include <string>
 
 
@@ -15,7 +15,7 @@ public:
 	PsslKey(uint32_t crc, uint32_t hash);
 	~PsslKey();
 
-	uint64_t toUint64() const;
+	uint64_t getKey() const;
 
 	std::string toString() const;
 
