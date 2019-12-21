@@ -3,6 +3,8 @@
 namespace UtilMemory
 {;
 
+#define ALIGN_MEMORY 0x1000000
+
 #ifdef GPCS4_WINDOWS
 
 #define WIN32_LEAN_AND_MEAN
@@ -63,6 +65,13 @@ void* VMMap(size_t nSize, uint nProtectFlag)
 	void* pAddr = NULL;
 	do 
 	{
+		//DWORD dummy;
+		//pAddr = _aligned_malloc(nSize, ALIGN_MEMORY);
+		//bool rc = VirtualProtect(pAddr, nSize, GetProtectFlag(nProtectFlag), &dummy);
+		//if (!rc)
+		//{
+		//	LOG_ERR("Can not change memory protection!");
+		//}
 		pAddr = VirtualAlloc(NULL, nSize, MEM_RESERVE | MEM_COMMIT, GetProtectFlag(nProtectFlag));
 	} while (false);
 	return pAddr;
@@ -72,6 +81,13 @@ void* VMMapEx(void* pAddr, size_t nSize, uint nProtectFlag, uint nType)
 {
 	do
 	{
+		//DWORD dummy;
+		//pAddr = _aligned_malloc(nSize, ALIGN_MEMORY);
+		//bool rc = VirtualProtect(pAddr, nSize, GetProtectFlag(nProtectFlag), &dummy);
+		//if (!rc)
+		//{
+		//	LOG_ERR("Can not change memory protection!");
+		//}
 		pAddr = VirtualAlloc(pAddr, nSize, GetTypeFlag(nType), GetProtectFlag(nProtectFlag));
 	} while (false);
 	return pAddr;
@@ -80,6 +96,7 @@ void* VMMapEx(void* pAddr, size_t nSize, uint nProtectFlag, uint nType)
 void VMUnMap(void* pAddr, size_t nSize)
 {
 	VirtualFree(pAddr, nSize, MEM_RELEASE);
+	//_aligned_free(pAddr);
 }
 
 bool VMProtect(void* pAddr, size_t nSize, uint nProtectFlag)

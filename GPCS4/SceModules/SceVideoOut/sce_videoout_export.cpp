@@ -39,7 +39,8 @@ static const SCE_EXPORT_LIBRARY g_pSceVideoOut_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceVideoOut =
 {
 	"libSceVideoOut",
-	g_pSceVideoOut_LibTable
+	g_pSceVideoOut_LibTable,
+	NULL
 };
 
 

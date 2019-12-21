@@ -25,7 +25,8 @@ static const SCE_EXPORT_LIBRARY g_pSceErrorDialog_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceErrorDialog =
 {
 	"libSceErrorDialog",
-	g_pSceErrorDialog_LibTable
+	g_pSceErrorDialog_LibTable,
+	NULL
 };
 
 

@@ -24,7 +24,8 @@ static const SCE_EXPORT_LIBRARY g_pSceMouse_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceMouse =
 {
 	"libSceMouse",
-	g_pSceMouse_LibTable
+	g_pSceMouse_LibTable,
+	NULL
 };
 
 

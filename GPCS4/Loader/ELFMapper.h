@@ -21,7 +21,7 @@ public:
 	bool validateHeader();
 	bool parseSegmentHeaders();
 	bool parseDynamicSection();
-	bool mapImageIntoMemroy();
+	bool mapImageIntoMemory();
 	bool parseSymbols();
 
 	bool decodeValue(std::string const &strEnc, uint64_t &val);
@@ -29,7 +29,6 @@ public:
 						   uint *nModuleId,
 						   uint *nLibraryId,
 						   uint64_t *nNid);
-
 private:
 	bool prepareTables(Elf64_Dyn const &entry, uint index);
 	bool parseSingleDynEntry(Elf64_Dyn const &entry, uint index);

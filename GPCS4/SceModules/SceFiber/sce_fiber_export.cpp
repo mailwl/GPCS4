@@ -26,7 +26,8 @@ static const SCE_EXPORT_LIBRARY g_pSceFiber_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceFiber =
 {
 	"libSceFiber",
-	g_pSceFiber_LibTable
+	g_pSceFiber_LibTable,
+	NULL
 };
 
 

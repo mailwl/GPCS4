@@ -41,7 +41,8 @@ static const SCE_EXPORT_LIBRARY g_pSceFios2_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceFios2 =
 {
 	"libSceFios2",
-	g_pSceFios2_LibTable
+	g_pSceFios2_LibTable,
+	NULL
 };
 
 

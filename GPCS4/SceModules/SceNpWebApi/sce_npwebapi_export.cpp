@@ -34,7 +34,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNpWebApi_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNpWebApi =
 {
 	"libSceNpWebApi",
-	g_pSceNpWebApi_LibTable
+	g_pSceNpWebApi_LibTable,
+	NULL
 };
 
 

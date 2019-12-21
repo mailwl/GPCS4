@@ -24,7 +24,8 @@ static const SCE_EXPORT_LIBRARY g_pSceSaveDataDialog_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceSaveDataDialog =
 {
 	"libSceSaveDataDialog",
-	g_pSceSaveDataDialog_LibTable
+	g_pSceSaveDataDialog_LibTable,
+	NULL
 };
 
 

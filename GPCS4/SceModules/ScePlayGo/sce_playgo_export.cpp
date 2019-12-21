@@ -31,7 +31,8 @@ static const SCE_EXPORT_LIBRARY g_pScePlayGo_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleScePlayGo =
 {
 	"libScePlayGo",
-	g_pScePlayGo_LibTable
+	g_pScePlayGo_LibTable,
+	NULL
 };
 
 

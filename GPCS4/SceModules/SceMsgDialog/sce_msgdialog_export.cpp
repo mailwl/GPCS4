@@ -26,7 +26,8 @@ static const SCE_EXPORT_LIBRARY g_pSceMsgDialog_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceMsgDialog =
 {
 	"libSceMsgDialog",
-	g_pSceMsgDialog_LibTable
+	g_pSceMsgDialog_LibTable,
+	NULL
 };
 
 

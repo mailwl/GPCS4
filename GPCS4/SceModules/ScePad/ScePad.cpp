@@ -68,6 +68,6 @@ int ScePad::read(ScePadData* data, int32_t num)
 
 int ScePad::readState(ScePadData* data)
 {
-
+	return 0;
 }
 

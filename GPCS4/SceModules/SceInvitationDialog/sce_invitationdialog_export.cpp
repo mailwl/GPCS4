@@ -24,7 +24,8 @@ static const SCE_EXPORT_LIBRARY g_pSceInvitationDialog_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceInvitationDialog =
 {
 	"libSceInvitationDialog",
-	g_pSceInvitationDialog_LibTable
+	g_pSceInvitationDialog_LibTable,
+	NULL
 };
 
 

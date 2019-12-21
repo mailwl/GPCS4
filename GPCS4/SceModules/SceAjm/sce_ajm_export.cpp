@@ -30,7 +30,8 @@ static const SCE_EXPORT_LIBRARY g_pSceAjm_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceAjm =
 {
 	"libSceAjm",
-	g_pSceAjm_LibTable
+	g_pSceAjm_LibTable,
+	NULL
 };
 
 

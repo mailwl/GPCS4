@@ -25,7 +25,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNpCommerce_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNpCommerce =
 {
 	"libSceNpCommerce",
-	g_pSceNpCommerce_LibTable
+	g_pSceNpCommerce_LibTable,
+	NULL
 };
 
 

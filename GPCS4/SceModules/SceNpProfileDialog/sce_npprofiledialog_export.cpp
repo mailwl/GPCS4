@@ -24,7 +24,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNpProfileDialog_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNpProfileDialog =
 {
 	"libSceNpProfileDialog",
-	g_pSceNpProfileDialog_LibTable
+	g_pSceNpProfileDialog_LibTable,
+	NULL
 };
 
 

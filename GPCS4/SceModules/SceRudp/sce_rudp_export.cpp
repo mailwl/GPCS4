@@ -38,7 +38,8 @@ static const SCE_EXPORT_LIBRARY g_pSceRudp_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceRudp =
 {
 	"libSceRudp",
-	g_pSceRudp_LibTable
+	g_pSceRudp_LibTable,
+	NULL
 };
 
 

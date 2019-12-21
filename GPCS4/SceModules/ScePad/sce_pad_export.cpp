@@ -31,7 +31,8 @@ static const SCE_EXPORT_LIBRARY g_pScePad_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleScePad =
 {
 	"libScePad",
-	g_pScePad_LibTable
+	g_pScePad_LibTable,
+	NULL
 };
 
 

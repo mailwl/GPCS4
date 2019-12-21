@@ -115,8 +115,8 @@ int PS4API sceKernelOpen(const char *path, int flags, SceKernelMode mode)
 	}
 	else
 	{
-		LOG_ASSERT((flags == SCE_KERNEL_O_RDONLY), "not supported flag.");
-		LOG_ASSERT((mode == SCE_KERNEL_S_IRU), "not supported mode.");
+		//LOG_ASSERT((flags == SCE_KERNEL_O_RDONLY), "not supported flag.");
+		//LOG_ASSERT((mode == SCE_KERNEL_S_IRU), "not supported mode.");
 
 		int fd = _open(pcPath.c_str(), _O_RDONLY | _O_BINARY, _S_IREAD);
 		if (fd == -1)
@@ -395,3 +395,15 @@ int PS4API sceKernelUnlink(void)
 	return SCE_OK;
 }
 
+
+int PS4API scek_open(const char* path, int flags, SceKernelMode mode)
+{
+	return sceKernelOpen(path, flags, mode);
+}
+
+
+int PS4API scek__open(const char* path, int flags, SceKernelMode mode)
+{
+	int fd = _open(path, flags, mode);
+	return fd;
+}

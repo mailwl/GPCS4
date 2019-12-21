@@ -23,7 +23,8 @@ static const SCE_EXPORT_LIBRARY g_pSceSysmodule_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceSysmodule =
 {
 	"libSceSysmodule",
-	g_pSceSysmodule_LibTable
+	g_pSceSysmodule_LibTable,
+	NULL
 };
 
 

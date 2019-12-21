@@ -25,7 +25,8 @@ static const SCE_EXPORT_LIBRARY g_pSceGameLiveStreaming_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceGameLiveStreaming =
 {
 	"libSceGameLiveStreaming",
-	g_pSceGameLiveStreaming_LibTable
+	g_pSceGameLiveStreaming_LibTable,
+	NULL
 };
 
 

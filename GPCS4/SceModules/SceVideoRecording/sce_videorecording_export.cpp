@@ -21,7 +21,8 @@ static const SCE_EXPORT_LIBRARY g_pSceVideoRecording_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceVideoRecording =
 {
 	"libSceVideoRecording",
-	g_pSceVideoRecording_LibTable
+	g_pSceVideoRecording_LibTable,
+	NULL
 };
 
 

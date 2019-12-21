@@ -45,6 +45,15 @@ bool ModuleLoader::loadModule(std::string const &fileName,
 			break;
 		}
 
+		//const auto& modules = m_modSystem.getMemoryMappedModules();
+		//for (auto i=1; i<modules.size(); ++i)
+		//{
+		//	const auto& mod = modules[i];
+		//	auto info       = mod.getModuleInfo();
+		//	info.
+		//}
+
+
 		*modOut = &(m_modSystem.getMemoryMappedModules()[0]);
 		retVal  = true;
 	} while (false);
@@ -96,7 +105,7 @@ bool ModuleLoader::loadModuleFromFile(std::string const &fileName,
 			break;
 		}
 
-		retVal = m_mapper.mapImageIntoMemroy();
+		retVal = m_mapper.mapImageIntoMemory();
 		if (!retVal)
 		{
 			break;
@@ -473,9 +482,9 @@ bool ModuleLoader::initializeModules()
 		int ret = mods[i].initialize();
 		if (ret != 0)
 		{
-			LOG_ERR("unable to initialize module %s. ret=%d",
+			LOG_ERR("unable to initialize module %s. ret=0x%x",
 					mods[i].fileName.c_str(), ret);
-			retVal = false;
+			//retVal = false;
 			break;
 		}
 	}

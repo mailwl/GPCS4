@@ -28,7 +28,8 @@ static const SCE_EXPORT_LIBRARY g_pSceRtc_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceRtc =
 {
 	"libSceRtc",
-	g_pSceRtc_LibTable
+	g_pSceRtc_LibTable,
+	NULL
 };
 
 

@@ -22,7 +22,8 @@ static const SCE_EXPORT_LIBRARY g_pSceScreenShot_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceScreenShot =
 {
 	"libSceScreenShot",
-	g_pSceScreenShot_LibTable
+	g_pSceScreenShot_LibTable,
+	NULL
 };
 
 

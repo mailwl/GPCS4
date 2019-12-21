@@ -18,6 +18,7 @@
 #include "sce_kernel_eventqueue.h"
 #include "sce_kernel_eventflag.h"
 
+#include <sys/types.h>
 
 extern const SCE_EXPORT_MODULE g_ExpModuleSceLibkernel;
 
@@ -26,13 +27,16 @@ extern const SCE_EXPORT_MODULE g_ExpModuleSceLibkernel;
 // The codebase is generated using GenerateCode.py
 // You may need to modify the code manually to fit development needs
 
-
+typedef struct sce__sigset_t
+{
+	uint32_t __bits[4];
+} sce_sigset_t;
 
 //////////////////////////////////////////////////////////////////////////
 // library: libkernel
 //////////////////////////////////////////////////////////////////////////
 
-int PS4API __error(void);
+int* PS4API __error(void);
 
 
 int PS4API __stack_chk_fail(void);
@@ -41,7 +45,7 @@ int PS4API __stack_chk_fail(void);
 int PS4API __stack_chk_guard(void);
 
 
-int PS4API __tls_get_addr(void);
+void* PS4API __tls_get_addr(const uint64_t* slot);
 
 
 int PS4API __pthread_cxa_finalize(void);
@@ -329,7 +333,7 @@ int PS4API sceKernelLoadStartModule(void);
 int PS4API sceKernelMapNamedDirectMemory(void **addr, size_t len, int prot, int flags, sceoff_t directMemoryStart, size_t alignment, const char *name);
 
 
-int PS4API sceKernelMapNamedFlexibleMemory(void);
+int PS4API sceKernelMapNamedFlexibleMemory(void** addrInOut, size_t len, int prot, int flags, const char* name);
 
 
 int PS4API sceKernelMprotect(void);
@@ -389,6 +393,50 @@ int PS4API scePthreadSetschedparam(void);
 int PS4API scePthreadSetspecific(void);
 
 
+int PS4API sceKernelGetModuleInfoForUnwind(void* out, int kind, int* out_size);
+
+
+int PS4API scek_sigfillset(sce_sigset_t* set);
+
+
+int PS4API scek_sigprocmask(int how, const sce_sigset_t* set, sce_sigset_t* old_set);
+
+
+int PS4API scek_getpagesize();
+
+
+void* PS4API scek_mmap(void* start, size_t length, int prot, int flags, int fd, off_t offset);
+
+
+int PS4API _is_signal_return(uint64_t param);
+
+
+int PS4API scek_msync(void* start, size_t length, int flags);
+
+
+void PS4API sceKernelDebugRaiseExceptionOnReleaseMode(uint32_t error_code, uint32_t param);
+
+
+void PS4NORETURN PS4API sceKernelDebugRaiseException(uint32_t error_code, uint32_t param);
+
+
+int PS4API sceKernelGetCompiledSdkVersion(uint64_t* version);
+
+
+int PS4API sceKernelIsAddressSanitizerEnabled();
+
+
+void* PS4API sceKernelGetProcParam(uint64_t p1, uint64_t p2);
+
+
+void PS4API _sceKernelRtldSetApplicationHeapAPI(void* heap_api);
+
+
+int PS4API scePthreadAttrGet(ScePthread thread, ScePthreadAttr* attr);
+
+
+int PS4API scePthreadAttrGetaffinity(ScePthread thread, SceKernelCpumask* mask);
+
 //////////////////////////////////////////////////////////////////////////
 // library: libSceCoredump
 //////////////////////////////////////////////////////////////////////////
@@ -402,7 +450,9 @@ int PS4API sceCoredumpRegisterCoredumpHandler(void);
 int PS4API sceCoredumpWriteUserData(void);
 
 
+int PS4API scek_open(const char* path, int flags, SceKernelMode mode);
 
+int PS4API scek__open(const char* path, int flags, SceKernelMode mode);
 
 //////////////////////////////////////////////////////////////////////////
 // library: libScePosix
@@ -525,7 +575,5 @@ int PS4API scek_getpid(void);
 
 
 int PS4API scek_getppid(void);
-
-
 
 

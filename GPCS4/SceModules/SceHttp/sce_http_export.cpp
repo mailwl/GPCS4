@@ -40,7 +40,8 @@ static const SCE_EXPORT_LIBRARY g_pSceHttp_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceHttp =
 {
 	"libSceHttp",
-	g_pSceHttp_LibTable
+	g_pSceHttp_LibTable,
+	NULL
 };
 
 

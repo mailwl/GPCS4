@@ -34,7 +34,8 @@ static const SCE_EXPORT_LIBRARY g_pSceSaveData_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceSaveData =
 {
 	"libSceSaveData",
-	g_pSceSaveData_LibTable
+	g_pSceSaveData_LibTable,
+	NULL
 };
 
 

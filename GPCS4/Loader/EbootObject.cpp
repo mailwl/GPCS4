@@ -271,13 +271,13 @@ bool CEbootObject::PreParseDynamic()
 
 				/* general info */
 			case DT_INIT:
-				LOG_DEBUG("INIT addr: %08x", pDyn->d_un.d_ptr);
+				LOG_DEBUG("INIT addr: %x", pDyn->d_un.d_ptr);
 				break;
 			case DT_FINI:
-				LOG_DEBUG("FINI addr: %08x", pDyn->d_un.d_ptr);
+				LOG_DEBUG("FINI addr: %x", pDyn->d_un.d_ptr);
 				break;
 			case DT_SCE_PLTGOT:
-				LOG_DEBUG("PLTGOT addr: %08x", pDyn->d_un.d_ptr);
+				LOG_DEBUG("PLTGOT addr: %x", pDyn->d_un.d_ptr);
 				break;
 
 				/* symbol table info */

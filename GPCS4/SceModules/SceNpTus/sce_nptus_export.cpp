@@ -31,7 +31,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNpTus_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNpTus =
 {
 	"libSceNpTus",
-	g_pSceNpTus_LibTable
+	g_pSceNpTus_LibTable,
+	NULL
 };
 
 

@@ -21,7 +21,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNpCommon_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNpCommon =
 {
 	"libSceNpCommon",
-	g_pSceNpCommon_LibTable
+	g_pSceNpCommon_LibTable,
+	NULL
 };
 
 

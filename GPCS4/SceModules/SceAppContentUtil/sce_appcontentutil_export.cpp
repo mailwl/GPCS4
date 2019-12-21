@@ -25,7 +25,8 @@ static const SCE_EXPORT_LIBRARY g_pSceAppContentUtil_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceAppContentUtil =
 {
 	"libSceAppContentUtil",
-	g_pSceAppContentUtil_LibTable
+	g_pSceAppContentUtil_LibTable,
+	NULL
 };
 
 

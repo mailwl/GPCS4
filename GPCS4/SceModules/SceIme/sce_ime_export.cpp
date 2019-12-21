@@ -28,7 +28,8 @@ static const SCE_EXPORT_LIBRARY g_pSceIme_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceIme =
 {
 	"libSceIme",
-	g_pSceIme_LibTable
+	g_pSceIme_LibTable,
+	NULL
 };
 
 

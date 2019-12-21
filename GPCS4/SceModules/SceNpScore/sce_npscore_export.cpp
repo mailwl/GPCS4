@@ -26,10 +26,16 @@ static const SCE_EXPORT_LIBRARY g_pSceNpScore_LibTable[] =
 	SCE_LIBRARY_ENTRY_END
 };
 
+static const SCE_PRX_NAME g_pSceNpScore_PrxTable[] = {
+	{ "libSceNpScoreRanking" },
+	NULL
+};
+
 const SCE_EXPORT_MODULE g_ExpModuleSceNpScore =
 {
 	"libSceNpScore",
-	g_pSceNpScore_LibTable
+	g_pSceNpScore_LibTable,
+	g_pSceNpScore_PrxTable
 };
 
 

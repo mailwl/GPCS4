@@ -25,7 +25,8 @@ static const SCE_EXPORT_LIBRARY g_pSceUserService_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceUserService =
 {
 	"libSceUserService",
-	g_pSceUserService_LibTable
+	g_pSceUserService_LibTable,
+	NULL
 };
 
 

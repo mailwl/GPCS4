@@ -46,7 +46,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNpMatching2_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNpMatching2 =
 {
 	"libSceNpMatching2",
-	g_pSceNpMatching2_LibTable
+	g_pSceNpMatching2_LibTable,
+	NULL
 };
 
 

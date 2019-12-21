@@ -173,6 +173,10 @@ int PS4API scePthreadMutexLock(ScePthreadMutex *mutex)
 
 int PS4API scePthreadMutexUnlock(ScePthreadMutex *mutex)
 {
+	if (*mutex == nullptr)
+	{
+		return SCE_KERNEL_ERROR_UNKNOWN;
+	}
 	// too many logs, not necessary
 	//LOG_SCE_TRACE("mutex %p", mutex);
 	int err = pthread_mutex_unlock((pthread_mutex_t*)mutex);

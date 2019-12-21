@@ -13,6 +13,7 @@
 struct MODULE_INFO
 {
 	void *pEntryPoint;
+	uint64_t pInitProc;
 
 	// virtual memory
 	byte *pMappedAddr;
@@ -135,7 +136,8 @@ struct MemoryMappedModule
 	friend ELFMapper;
 
 public:
-	typedef int PS4API (*intialize_func)(size_t argc, void *argv, void *term);
+	typedef int PS4API (*init_proc)(size_t argc, void *argv, int (*term)(size_t,  void *));
+
 	std::string fileName;
 
 	const FileList &getNeededFiles() const;

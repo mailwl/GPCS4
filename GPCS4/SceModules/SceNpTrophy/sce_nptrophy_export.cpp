@@ -28,7 +28,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNpTrophy_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNpTrophy =
 {
 	"libSceNpTrophy",
-	g_pSceNpTrophy_LibTable
+	g_pSceNpTrophy_LibTable,
+	NULL
 };
 
 

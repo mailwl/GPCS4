@@ -34,7 +34,8 @@ static const SCE_EXPORT_LIBRARY g_pSceAudio3d_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceAudio3d =
 {
 	"libSceAudio3d",
-	g_pSceAudio3d_LibTable
+	g_pSceAudio3d_LibTable,
+	NULL
 };
 
 

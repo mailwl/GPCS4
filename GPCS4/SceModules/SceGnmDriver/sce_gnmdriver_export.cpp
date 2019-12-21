@@ -1,13 +1,10 @@
 #include "sce_gnmdriver.h"
 
-
 // Note:
 // The codebase is generated using GenerateCode.py
 // You may need to modify the code manually to fit development needs
 
-
-static const SCE_EXPORT_FUNCTION g_pSceGnmDriver_libSceGnmDriver_FunctionTable[] =
-{
+static const SCE_EXPORT_FUNCTION g_pSceGnmDriver_libSceGnmDriver_FunctionTable[] = {
 	{ 0x145559702BB7CD65, "_import_145559702BB7CD65", (void*)_import_145559702BB7CD65 },
 	{ 0x8A6D99B88B5A6EEE, "_import_8A6D99B88B5A6EEE", (void*)_import_8A6D99B88B5A6EEE },
 	{ 0xB616CF706EC4EEA9, "_import_B616CF706EC4EEA9", (void*)_import_B616CF706EC4EEA9 },
@@ -123,19 +120,22 @@ static const SCE_EXPORT_FUNCTION g_pSceGnmDriver_libSceGnmDriver_FunctionTable[]
 	{ 0xAD3215D759CC42E3, "sceGnmValidateOnSubmitEnabled", (void*)sceGnmValidateOnSubmitEnabled },
 	{ 0x30131AE8416EE0AA, "sceGnmValidateResetState", (void*)sceGnmValidateResetState },
 	{ 0x43BB7854460B69F2, "sceGnmValidationRegisterMemoryCheckCallback", (void*)sceGnmValidationRegisterMemoryCheckCallback },
+	{ 0xd07daf0586d32c72, "sceGnmDrawInitDefaultHardwareState200", (void*)sceGnmDrawInitDefaultHardwareState200 },
 	SCE_FUNCTION_ENTRY_END
 };
 
-static const SCE_EXPORT_LIBRARY g_pSceGnmDriver_LibTable[] =
-{
+static const SCE_EXPORT_LIBRARY g_pSceGnmDriver_LibTable[] = {
 	{ "libSceGnmDriver", g_pSceGnmDriver_libSceGnmDriver_FunctionTable },
 	SCE_LIBRARY_ENTRY_END
 };
 
-const SCE_EXPORT_MODULE g_ExpModuleSceGnmDriver =
-{
-	"libSceGnmDriver",
-	g_pSceGnmDriver_LibTable
+static const SCE_PRX_NAME g_pSceGnmDrives_PrxTable[] = {
+	{ "libSceGnmDriver_padebug" },
+	NULL
 };
 
-
+const SCE_EXPORT_MODULE g_ExpModuleSceGnmDriver = {
+	"libSceGnmDriver",
+	g_pSceGnmDriver_LibTable,
+	g_pSceGnmDrives_PrxTable
+};

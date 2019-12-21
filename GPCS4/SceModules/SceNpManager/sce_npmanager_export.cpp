@@ -44,7 +44,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNpManager_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNpManager =
 {
 	"libSceNpManager",
-	g_pSceNpManager_LibTable
+	g_pSceNpManager_LibTable,
+	NULL
 };
 
 

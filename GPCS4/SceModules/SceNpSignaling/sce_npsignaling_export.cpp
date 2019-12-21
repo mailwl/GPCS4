@@ -30,7 +30,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNpSignaling_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNpSignaling =
 {
 	"libSceNpSignaling",
-	g_pSceNpSignaling_LibTable
+	g_pSceNpSignaling_LibTable,
+	NULL
 };
 
 

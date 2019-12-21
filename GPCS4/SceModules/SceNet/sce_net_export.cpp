@@ -51,7 +51,8 @@ static const SCE_EXPORT_LIBRARY g_pSceNet_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceNet =
 {
 	"libSceNet",
-	g_pSceNet_LibTable
+	g_pSceNet_LibTable,
+	NULL
 };
 
 

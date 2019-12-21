@@ -1,13 +1,10 @@
 #include "sce_libkernel.h"
 
-
 // Note:
 // The codebase is generated using GenerateCode.py
 // You may need to modify the code manually to fit development needs
 
-
-static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libkernel_FunctionTable[] =
-{
+static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libkernel_FunctionTable[] = {
 	{ 0xF41703CA43E6A352, "__error", (void*)__error },
 	{ 0x3AEDE22F569BBE78, "__stack_chk_fail", (void*)__stack_chk_fail },
 	{ 0x7FBB8EC58F663355, "__stack_chk_guard", (void*)__stack_chk_guard },
@@ -126,22 +123,37 @@ static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libkernel_FunctionTable[] =
 	{ 0x21A7C8D8FC5C3E74, "scePthreadMutexTimedlock", (void*)scePthreadMutexTimedlock },
 	{ 0xBA9A15AF330715E1, "scePthreadMutexTrylock", (void*)scePthreadMutexTrylock },
 	{ 0xA084454E3A082DB8, "scePthreadSetschedparam", (void*)scePthreadSetschedparam },
+	{ 0xc755fbe9aad83315, "scePthreadAttrGet", (void*)scePthreadAttrGet },
 	{ 0xF81CD7624A9878B1, "scePthreadSetspecific", (void*)scePthreadSetspecific },
+	{ 0xf3eb39073663c528, "scePthreadAttrGetaffinity", (void*)scePthreadAttrGetaffinity },
+	{ 0x4694092552938853, "sceKernelGetModuleInfoForUnwind", (void*)sceKernelGetModuleInfoForUnwind },
+	{ 0xcc4ff05c86632e83, "sceKernelDebugRaiseExceptionOnReleaseMode", (void*)sceKernelDebugRaiseExceptionOnReleaseMode },
+	{ 0x38c0d128a019f08e, "sceKernelDebugRaiseException", (void*)sceKernelDebugRaiseException },
+	{ 0x581eba7afbbc6ec5, "sceKernelGetCompiledSdkVersion", (void*)sceKernelGetCompiledSdkVersion },
+	{ 0x8e1fbc5e22b82de1, "sceKernelIsAddressSanitizerEnabled", (void*)sceKernelIsAddressSanitizerEnabled },
+	{ 0xf79f6aadaccf22b8, "sceKernelGetProcParam", (void*)sceKernelGetProcParam },
+	{ 0xa7911c41e11e2401, "_sceKernelRtldSetApplicationHeapAPI", (void*)_sceKernelRtldSetApplicationHeapAPI },
 	{ 0x1E82D558D6A70417, "getpid", (void*)scek_getpid },
 	{ 0x7BAA2F068F59BC97, "getppid", (void*)scek_getppid },
+	{ 0x5644c0b2b643709d, "sigfillset", (void*)scek_sigfillset },
+	{ 0x68f732a6d6ce899b, "sigprocmask", (void*)scek_sigprocmask },
+	{ 0x93e017aaedbf7817, "getpagesize", (void*)scek_getpagesize },
+	{ 0x04f13db3dbd0417a, "mmap", (void*)scek_mmap },
+	{ 0x72b6f98fb9a49357, "_is_signal_return", (void*)_is_signal_return },
+	{ 0xb59638f9264d1610, "msync", (void*)scek_msync },
+	{ 0xc2e0aba081a3b768, "open", (void*)scek_open },
+	{ 0xe9cdeb09513f7d35, "_open", (void*)scek__open },
 	SCE_FUNCTION_ENTRY_END
 };
 
-static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libSceCoredump_FunctionTable[] =
-{
+static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libSceCoredump_FunctionTable[] = {
 	{ 0xF985F4CFF19448DC, "sceCoredumpAttachMemoryRegion", (void*)sceCoredumpAttachMemoryRegion },
 	{ 0xF332D27C47D6E405, "sceCoredumpRegisterCoredumpHandler", (void*)sceCoredumpRegisterCoredumpHandler },
 	{ 0x0DB6E48FA60759DA, "sceCoredumpWriteUserData", (void*)sceCoredumpWriteUserData },
 	SCE_FUNCTION_ENTRY_END
 };
 
-static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libScePosix_FunctionTable[] =
-{
+static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libScePosix_FunctionTable[] = {
 	{ 0x94B313F6F240724D, "clock_gettime", (void*)scek_clock_gettime },
 	{ 0x9FCF2FC770B99D6F, "gettimeofday", (void*)scek_gettimeofday },
 	{ 0xC92F14D931827B50, "nanosleep", (void*)scek_nanosleep },
@@ -156,7 +168,7 @@ static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libScePosix_FunctionTable[] =
 	{ 0x96D09F686AF62461, "pthread_mutex_destroy", (void*)scek_pthread_mutex_destroy },
 	{ 0xB6D1CD7D4FAA0C15, "pthread_mutex_init", (void*)scek_pthread_mutex_init },
 	{ 0xEC7D224CE7224CBA, "pthread_mutex_lock", (void*)scek_pthread_mutex_lock },
-	{ 0x2BF8D785BB76827E, "pthread_mutex_trylock", (void*)scek_pthread_mutex_trylock},
+	{ 0x2BF8D785BB76827E, "pthread_mutex_trylock", (void*)scek_pthread_mutex_trylock },
 	{ 0xD99F8FA58E826898, "pthread_mutex_unlock", (void*)scek_pthread_mutex_unlock },
 	{ 0x1C5EE52B8EB1CE36, "pthread_mutexattr_destroy", (void*)scek_pthread_mutexattr_destroy },
 	{ 0x7501D612C26DA04E, "pthread_mutexattr_init", (void*)scek_pthread_mutexattr_init },
@@ -181,18 +193,15 @@ static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libScePosix_FunctionTable[] =
 	SCE_FUNCTION_ENTRY_END
 };
 
-static const SCE_EXPORT_LIBRARY g_pSceLibkernel_LibTable[] =
-{
+static const SCE_EXPORT_LIBRARY g_pSceLibkernel_LibTable[] = {
 	{ "libkernel", g_pSceLibkernel_libkernel_FunctionTable },
 	{ "libSceCoredump", g_pSceLibkernel_libSceCoredump_FunctionTable },
 	{ "libScePosix", g_pSceLibkernel_libScePosix_FunctionTable },
 	SCE_LIBRARY_ENTRY_END
 };
 
-const SCE_EXPORT_MODULE g_ExpModuleSceLibkernel =
-{
+const SCE_EXPORT_MODULE g_ExpModuleSceLibkernel = {
 	"libkernel",
-	g_pSceLibkernel_LibTable
+	g_pSceLibkernel_LibTable,
+	NULL
 };
-
-

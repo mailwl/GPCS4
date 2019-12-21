@@ -27,7 +27,8 @@ static const SCE_EXPORT_LIBRARY g_pSceAudioOut_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceAudioOut =
 {
 	"libSceAudioOut",
-	g_pSceAudioOut_LibTable
+	g_pSceAudioOut_LibTable,
+	NULL
 };
 
 

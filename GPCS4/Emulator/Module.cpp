@@ -95,7 +95,7 @@ bool MemoryMappedModule::getSymbolInfo(std::string const &encSymbol,
 			*modName = "";
 			*libName = "";
 			*nid     = 0;
-			retVal   = true;
+			//TODO: not encoded symbol, find right module and library  //retVal   = true;
 			break;
 		}
 
@@ -319,11 +319,13 @@ int MemoryMappedModule::initialize()
 {
 	int retVal = 0;
 
-	// TODO: libkernel's startup function contains syscalls.
-	if (0 && isModule() && m_moduleInfo.pEntryPoint != nullptr)
+	if (isModule())
 	{
-		auto ep = reinterpret_cast<intialize_func>(m_moduleInfo.pEntryPoint);
-		retVal  = ep(0, nullptr, nullptr);
+		LOG_DEBUG("(%s) .init_proc() start", fileName.c_str());
+		auto init = reinterpret_cast<init_proc>(m_moduleInfo.pInitProc);
+		retVal    = init(0, 0, nullptr);
+
+		LOG_DEBUG("(%s) .init_proc() = 0x%x", fileName.c_str(), retVal);
 	}
 
 	return retVal;

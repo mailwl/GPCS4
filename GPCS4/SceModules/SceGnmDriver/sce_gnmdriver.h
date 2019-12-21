@@ -386,5 +386,5 @@ int PS4API sceGnmValidateResetState(void);
 int PS4API sceGnmValidationRegisterMemoryCheckCallback(void);
 
 
-
+int PS4API sceGnmDrawInitDefaultHardwareState200();
 

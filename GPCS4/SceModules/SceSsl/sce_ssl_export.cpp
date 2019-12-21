@@ -22,7 +22,8 @@ static const SCE_EXPORT_LIBRARY g_pSceSsl_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceSsl =
 {
 	"libSceSsl",
-	g_pSceSsl_LibTable
+	g_pSceSsl_LibTable,
+	NULL
 };
 
 

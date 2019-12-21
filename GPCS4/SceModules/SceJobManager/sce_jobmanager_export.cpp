@@ -27,7 +27,8 @@ static const SCE_EXPORT_LIBRARY g_pSceJobManager_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceJobManager =
 {
 	"libSceJobManager",
-	g_pSceJobManager_LibTable
+	g_pSceJobManager_LibTable,
+	NULL
 };
 
 

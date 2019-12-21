@@ -205,7 +205,8 @@ static const SCE_EXPORT_LIBRARY g_pSceLibc_LibTable[] =
 const SCE_EXPORT_MODULE g_ExpModuleSceLibc =
 {
 	"libc",
-	g_pSceLibc_LibTable
+	g_pSceLibc_LibTable,
+	NULL
 };
 
 

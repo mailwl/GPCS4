@@ -5,6 +5,7 @@
 #include "Module.h"
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 struct SCE_EXPORT_FUNCTION;
 struct SCE_EXPORT_LIBRARY;
@@ -42,11 +43,12 @@ private:
 
 	typedef std::unordered_map<std::string, NidFuncMap> SceLibMapNid;
 	typedef std::unordered_map<std::string, NameFuncMap> SceLibMapName;
-
+	
 	typedef std::unordered_map<std::string, SceLibMapNid> SceModuleMapNid;
 
 	typedef std::unordered_map<std::string, bool> SceAllowedFileMap;
 	typedef std::unordered_map<std::string, SceLibMapName> SceModuleMapName;
+	typedef std::unordered_map<std::string, std::vector<std::string>> SceModuleMapPrxNames;
 	typedef std::unordered_map<std::string, ModuleRecord> SceOverridableMapNid;
 	typedef std::unordered_map<std::string, MemoryMappedModule> SceMappedModuleMap;
 
@@ -110,11 +112,13 @@ private:
 	bool isLibraryLoadable(std::string const &modName, std::string const &libName);
 	bool isFunctionLoadable(std::string const &modName,std::string const &libName, uint64_t nid);
 
+	bool isPrxKnown(std::string const& modName);
 
 private:
 
 	SceModuleMapNid m_umpModuleMapNid;
 	SceModuleMapName m_umpModuleMapName;
+	SceModuleMapPrxNames m_umpModuleMapPrxNames;
 
 	SceOverridableMapNid m_overridableModules;
 	//SceMappedModuleMap m_mappedModules;

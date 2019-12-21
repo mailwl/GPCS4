@@ -1,21 +1,27 @@
 #include "SceModuleSystem.h"
-#include "Platform/PlatformUtils.h"
+
 #include "sce_modules.h"
 
-CSceModuleSystem::CSceModuleSystem() {}
+#include "Platform/PlatformUtils.h"
 
-CSceModuleSystem::~CSceModuleSystem() {}
+CSceModuleSystem::CSceModuleSystem()
+{
+}
 
-bool CSceModuleSystem::IsEndLibraryEntry(const SCE_EXPORT_LIBRARY *pLib)
+CSceModuleSystem::~CSceModuleSystem()
+{
+}
+
+bool CSceModuleSystem::IsEndLibraryEntry(const SCE_EXPORT_LIBRARY* pLib)
 {
 	return (pLib->szLibraryName == NULL && pLib->pFunctionEntries == NULL);
 }
 
-bool CSceModuleSystem::isModuleLoadable(std::string const &modName)
+bool CSceModuleSystem::isModuleLoadable(std::string const& modName)
 {
 	bool retVal = false;
 
-	if (m_umpModuleMapName.count(modName) == 0)
+	if (!isPrxKnown(modName))
 	{
 		retVal = true;
 	}
@@ -31,8 +37,39 @@ bool CSceModuleSystem::isModuleLoadable(std::string const &modName)
 	return retVal;
 }
 
-bool CSceModuleSystem::isLibraryLoadable(std::string const &modName,
-										 std::string const &libName)
+bool CSceModuleSystem::isPrxKnown(std::string const& modName)
+{
+	bool retVal = false;
+
+	do
+	{
+		if (m_umpModuleMapName.count(modName) > 0)
+		{
+			retVal = true;
+			break;
+		}
+		for (const auto& prxNames : m_umpModuleMapPrxNames)
+		{
+			for (const auto& prxName : prxNames.second)
+			{
+				if (modName == prxName)
+				{
+					retVal = true;
+					break;
+				}
+			}
+			if (retVal == true)
+			{
+				break;
+			}
+		}
+	} while (false);
+
+	return retVal;
+}
+
+bool CSceModuleSystem::isLibraryLoadable(std::string const& modName,
+										 std::string const& libName)
 {
 	bool retVal = false;
 
@@ -70,8 +107,8 @@ bool CSceModuleSystem::isLibraryLoadable(std::string const &modName,
 	return retVal;
 }
 
-bool CSceModuleSystem::isFunctionLoadable(std::string const &modName,
-										  std::string const &libName,
+bool CSceModuleSystem::isFunctionLoadable(std::string const& modName,
+										  std::string const& libName,
 										  uint64_t nid)
 {
 	bool retVal = false;
@@ -99,15 +136,15 @@ bool CSceModuleSystem::isFunctionLoadable(std::string const &modName,
 	return retVal;
 }
 
-bool CSceModuleSystem::isModuleOverridable(std::string const &modName) const
+bool CSceModuleSystem::isModuleOverridable(std::string const& modName) const
 {
 	return m_overridableModules.count(modName) > 0
 			   ? m_overridableModules.at(modName).overridable
 			   : false;
 }
 
-bool CSceModuleSystem::isLibraryOverridable(std::string const &modName,
-											std::string const &libName) const
+bool CSceModuleSystem::isLibraryOverridable(std::string const& modName,
+											std::string const& libName) const
 {
 	bool retVal = false;
 
@@ -119,7 +156,7 @@ bool CSceModuleSystem::isLibraryOverridable(std::string const &modName,
 			break;
 		}
 
-		auto &mr = m_overridableModules.at(modName);
+		auto& mr = m_overridableModules.at(modName);
 		if (mr.libraries.empty())
 		{
 			// if the override library table is empty, all bibraries in the module is
@@ -137,8 +174,8 @@ bool CSceModuleSystem::isLibraryOverridable(std::string const &modName,
 	return retVal;
 }
 
-bool CSceModuleSystem::isFunctionOverridable(std::string const &modName,
-											 std::string const &libName,
+bool CSceModuleSystem::isFunctionOverridable(std::string const& modName,
+											 std::string const& libName,
 											 uint64_t nid) const
 {
 	bool retVal = false;
@@ -157,7 +194,7 @@ bool CSceModuleSystem::isFunctionOverridable(std::string const &modName,
 			break;
 		}
 
-		auto &lr = m_overridableModules.at(modName).libraries.at(libName);
+		auto& lr = m_overridableModules.at(modName).libraries.at(libName);
 		if (lr.functions.empty())
 		{
 			retVal = true;
@@ -178,7 +215,7 @@ bool CSceModuleSystem::isFunctionOverridable(std::string const &modName,
 	return retVal;
 }
 
-bool CSceModuleSystem::decodeValue(std::string const &encodedStr, uint64_t &value)
+bool CSceModuleSystem::decodeValue(std::string const& encodedStr, uint64_t& value)
 {
 	bool bRet = false;
 
@@ -239,13 +276,13 @@ bool CSceModuleSystem::decodeValue(std::string const &encodedStr, uint64_t &valu
 	return false;
 }
 
-bool CSceModuleSystem::IsEndFunctionEntry(const SCE_EXPORT_FUNCTION *pFunc)
+bool CSceModuleSystem::IsEndFunctionEntry(const SCE_EXPORT_FUNCTION* pFunc)
 {
 	return (pFunc->nNid == 0 && pFunc->szFunctionName == NULL &&
 			pFunc->pFunction == NULL);
 }
 
-bool CSceModuleSystem::RegisterModule(const SCE_EXPORT_MODULE &stModule)
+bool CSceModuleSystem::RegisterModule(const SCE_EXPORT_MODULE& stModule)
 {
 	bool bRet = false;
 	do
@@ -263,14 +300,14 @@ bool CSceModuleSystem::RegisterModule(const SCE_EXPORT_MODULE &stModule)
 			break;
 		}
 
-		const char *szModName          = stModule.szModuleName;
-		const SCE_EXPORT_LIBRARY *pLib = stModule.pLibraries;
+		const char* szModName          = stModule.szModuleName;
+		const SCE_EXPORT_LIBRARY* pLib = stModule.pLibraries;
 		SceLibMapNid libMapNid;
 		SceLibMapName libMapName;
 		while (!IsEndLibraryEntry(pLib))
 		{
-			const char *szLibName            = pLib->szLibraryName;
-			const SCE_EXPORT_FUNCTION *pFunc = pLib->pFunctionEntries;
+			const char* szLibName            = pLib->szLibraryName;
+			const SCE_EXPORT_FUNCTION* pFunc = pLib->pFunctionEntries;
 			if (!isLibraryLoadable(szModName, szLibName))
 			{
 				LOG_DEBUG("Library %s of Module %s has already been loaded and is "
@@ -290,38 +327,50 @@ bool CSceModuleSystem::RegisterModule(const SCE_EXPORT_MODULE &stModule)
 				//}
 
 				nidMap.insert(
-					std::make_pair((uint64)pFunc->nNid, (void *)pFunc->pFunction));
+					std::make_pair((uint64)pFunc->nNid, (void*)pFunc->pFunction));
 				nameMap.insert(std::make_pair(std::string(pFunc->szFunctionName),
-											  (void *)pFunc->pFunction));
+											  (void*)pFunc->pFunction));
 				++pFunc;
 			}
-			libMapNid.insert(std::make_pair((char *)szLibName, nidMap));
-			libMapName.insert(std::make_pair((char *)szLibName, nameMap));
+			libMapNid.insert(std::make_pair((char*)szLibName, nidMap));
+			libMapName.insert(std::make_pair((char*)szLibName, nameMap));
 			++pLib;
 		}
 
-		m_umpModuleMapNid.insert(std::make_pair((char *)szModName, libMapNid));
-		m_umpModuleMapName.insert(std::make_pair((char *)szModName, libMapName));
+		m_umpModuleMapNid.insert(std::make_pair((char*)szModName, libMapNid));
+		m_umpModuleMapName.insert(std::make_pair((char*)szModName, libMapName));
+
+		if (stModule.pKnownPrxNames != NULL)
+		{
+			const auto* prxNames = stModule.pKnownPrxNames;
+			std::vector<std::string> names;
+			while (prxNames != NULL && prxNames->szPrxName != NULL)
+			{
+				names.emplace_back(prxNames->szPrxName);
+				++prxNames;
+			}
+			m_umpModuleMapPrxNames.insert(std::make_pair((char*)szModName, names));
+		}
 
 		bRet = true;
 	} while (false);
 	return bRet;
 }
 
-bool CSceModuleSystem::registerFunction(std::string const &modName,
-										std::string const &libName,
+bool CSceModuleSystem::registerFunction(std::string const& modName,
+										std::string const& libName,
 										uint64_t nid,
-										void *p)
+										void* p)
 {
 	bool retVal = false;
 
 	do
 	{
-		if (isFunctionLoadable(modName, libName, nid) == false)
-		{
-			retVal = false;
-			break;
-		}
+		//if (isFunctionLoadable(modName, libName, nid) == false)
+		//{
+		//	retVal = false;
+		//	break;
+		//}
 
 		if (!IsModuleLoaded(modName))
 		{
@@ -350,15 +399,17 @@ bool CSceModuleSystem::registerFunction(std::string const &modName,
 			m_umpModuleMapNid.at(modName).at(libName).insert(std::make_pair(nid, p));
 		}
 
+		retVal = true;
+
 	} while (false);
 
 	return retVal;
 }
 
-bool CSceModuleSystem::registerSymbol(std::string const &modName,
-									  std::string const &libName,
-									  std::string const &symbolName,
-									  void *p)
+bool CSceModuleSystem::registerSymbol(std::string const& modName,
+									  std::string const& libName,
+									  std::string const& symbolName,
+									  void* p)
 {
 	bool retVal = false;
 	if (m_umpModuleMapName.count(modName) == 0)
@@ -367,14 +418,14 @@ bool CSceModuleSystem::registerSymbol(std::string const &modName,
 		m_umpModuleMapName.emplace(std::make_pair(modName, libMapName));
 	}
 
-	auto &mod = m_umpModuleMapName.at(modName);
+	auto& mod = m_umpModuleMapName.at(modName);
 	if (mod.count(libName) == 0)
 	{
 		NameFuncMap symbolNameMap = {};
 		mod.emplace(std::make_pair(libName, symbolNameMap));
 	}
 
-	auto &lib = mod.at(libName);
+	auto& lib = mod.at(libName);
 	if (lib.count(symbolName) != 0)
 	{
 		LOG_ERR("symbol %s has ready been registered", symbolName.c_str());
@@ -389,8 +440,8 @@ bool CSceModuleSystem::registerSymbol(std::string const &modName,
 	return retVal;
 }
 
-bool CSceModuleSystem::registerMemoryMappedModule(std::string const &modName,
-												  MemoryMappedModule &&mod)
+bool CSceModuleSystem::registerMemoryMappedModule(std::string const& modName,
+												  MemoryMappedModule&& mod)
 {
 	auto index = m_mappedModules.size();
 
@@ -400,7 +451,7 @@ bool CSceModuleSystem::registerMemoryMappedModule(std::string const &modName,
 	return true;
 }
 
-bool CSceModuleSystem::isMemoryMappedModuleLoaded(std::string const &modName)
+bool CSceModuleSystem::isMemoryMappedModuleLoaded(std::string const& modName)
 {
 	bool retVal = false;
 
@@ -416,13 +467,13 @@ bool CSceModuleSystem::isMemoryMappedModuleLoaded(std::string const &modName)
 	return retVal;
 }
 
-CSceModuleSystem::SceMappedModuleList &CSceModuleSystem::getMemoryMappedModules()
+CSceModuleSystem::SceMappedModuleList& CSceModuleSystem::getMemoryMappedModules()
 {
 	return m_mappedModules;
 }
 
-bool CSceModuleSystem::GetMemoryMappedModule(std::string const &modName,
-											 MemoryMappedModule **ppMod)
+bool CSceModuleSystem::GetMemoryMappedModule(std::string const& modName,
+											 MemoryMappedModule** ppMod)
 {
 	bool retVal = true;
 
@@ -439,11 +490,11 @@ bool CSceModuleSystem::GetMemoryMappedModule(std::string const &modName,
 	return retVal;
 }
 
-void *CSceModuleSystem::FindFunction(const std::string &strModName,
-									 const std::string &strLibName,
+void* CSceModuleSystem::FindFunction(const std::string& strModName,
+									 const std::string& strLibName,
 									 uint64 nNid)
 {
-	void *pFunction = NULL;
+	void* pFunction = NULL;
 	do
 	{
 		SceModuleMapNid::iterator iter_mod = m_umpModuleMapNid.find(strModName);
@@ -452,14 +503,14 @@ void *CSceModuleSystem::FindFunction(const std::string &strModName,
 			break;
 		}
 
-		SceLibMapNid &libMap            = iter_mod->second;
+		SceLibMapNid& libMap            = iter_mod->second;
 		SceLibMapNid::iterator iter_lib = libMap.find(strLibName);
 		if (iter_lib == libMap.end())
 		{
 			break;
 		}
 
-		NidFuncMap &nidMap             = iter_lib->second;
+		NidFuncMap& nidMap             = iter_lib->second;
 		NidFuncMap::iterator iter_func = nidMap.find(nNid);
 		if (iter_func == nidMap.end())
 		{
@@ -471,11 +522,11 @@ void *CSceModuleSystem::FindFunction(const std::string &strModName,
 	return pFunction;
 }
 
-void *CSceModuleSystem::findSymbol(std::string const &modName,
-								   std::string const &libName,
-								   std::string const &symbolName)
+void* CSceModuleSystem::findSymbol(std::string const& modName,
+								   std::string const& libName,
+								   std::string const& symbolName)
 {
-	void *pAddr = nullptr;
+	void* pAddr = nullptr;
 	do
 	{
 		auto iterMod = m_umpModuleMapName.find(modName);
@@ -484,7 +535,7 @@ void *CSceModuleSystem::findSymbol(std::string const &modName,
 			break;
 		}
 
-		auto &libMap = iterMod->second;
+		auto& libMap = iterMod->second;
 		auto iterLib = libMap.find(libName);
 
 		if (iterLib == libMap.end())
@@ -492,7 +543,7 @@ void *CSceModuleSystem::findSymbol(std::string const &modName,
 			break;
 		}
 
-		auto &nameMap   = iterLib->second;
+		auto& nameMap   = iterLib->second;
 		auto iterSymbol = nameMap.find(symbolName);
 		if (iterSymbol == nameMap.end())
 		{
@@ -505,13 +556,13 @@ void *CSceModuleSystem::findSymbol(std::string const &modName,
 	return pAddr;
 }
 
-bool CSceModuleSystem::IsModuleLoaded(const std::string &modName)
+bool CSceModuleSystem::IsModuleLoaded(const std::string& modName)
 {
 	return (m_umpModuleMapNid.count(modName) != 0);
 }
 
-bool CSceModuleSystem::isLibraryLoaded(std::string const &modName,
-									   std::string const &libName)
+bool CSceModuleSystem::isLibraryLoaded(std::string const& modName,
+									   std::string const& libName)
 {
 	bool retVal = false;
 
@@ -531,7 +582,7 @@ bool CSceModuleSystem::isLibraryLoaded(std::string const &modName,
 	return retVal;
 }
 
-bool CSceModuleSystem::setModuleOverridability(const std::string &modName, bool ovrd)
+bool CSceModuleSystem::setModuleOverridability(const std::string& modName, bool ovrd)
 {
 	bool retVal = false;
 	do
@@ -561,8 +612,8 @@ bool CSceModuleSystem::setModuleOverridability(const std::string &modName, bool 
 	return retVal;
 }
 
-bool CSceModuleSystem::setLibraryOverridability(const std::string &modName,
-												const std::string &libName,
+bool CSceModuleSystem::setLibraryOverridability(const std::string& modName,
+												const std::string& libName,
 												bool ovrd,
 												LibraryRecord::Mode mode)
 {
@@ -582,7 +633,7 @@ bool CSceModuleSystem::setLibraryOverridability(const std::string &modName,
 			m_overridableModules.insert(std::make_pair(modName, mr));
 		}
 
-		auto &mr = m_overridableModules.at(modName);
+		auto& mr = m_overridableModules.at(modName);
 
 		if (mr.libraries.count(libName) == 0)
 		{
@@ -604,8 +655,8 @@ bool CSceModuleSystem::setLibraryOverridability(const std::string &modName,
 	return retVal;
 }
 
-bool CSceModuleSystem::setFunctionOverridability(const std::string &modName,
-												 const std::string &libName,
+bool CSceModuleSystem::setFunctionOverridability(const std::string& modName,
+												 const std::string& libName,
 												 uint64_t nid,
 												 bool ovrd)
 {
@@ -625,7 +676,7 @@ bool CSceModuleSystem::setFunctionOverridability(const std::string &modName,
 			m_overridableModules.insert(std::make_pair(modName, mr));
 		}
 
-		auto &mr = m_overridableModules.at(modName);
+		auto& mr = m_overridableModules.at(modName);
 		if (mr.libraries.count(libName) == 0)
 		{
 			if (ovrd == false)
@@ -638,7 +689,7 @@ bool CSceModuleSystem::setFunctionOverridability(const std::string &modName,
 			mr.libraries.insert(std::make_pair(libName, lr));
 		}
 
-		auto &lr = mr.libraries.at(modName);
+		auto& lr = mr.libraries.at(modName);
 		if (ovrd)
 		{
 			if (lr.mode == LibraryRecord::Mode::Allow &&
@@ -681,7 +732,7 @@ bool CSceModuleSystem::setFunctionOverridability(const std::string &modName,
 	return retVal;
 }
 
-bool CSceModuleSystem::addAllowedFile(std::string const &fileName)
+bool CSceModuleSystem::addAllowedFile(std::string const& fileName)
 {
 	if (m_allowedFiles.count(fileName) == 0)
 	{
@@ -691,7 +742,7 @@ bool CSceModuleSystem::addAllowedFile(std::string const &fileName)
 	return true;
 }
 
-bool CSceModuleSystem::isFileAllowedToLoad(std::string const &fileName)
+bool CSceModuleSystem::isFileAllowedToLoad(std::string const& fileName)
 {
 	bool retVal = false;
 
@@ -723,10 +774,10 @@ bool CSceModuleSystem::isFileAllowedToLoad(std::string const &fileName)
 	return retVal;
 }
 
-bool CSceModuleSystem::decodeEncodedName(std::string const &strEncName,
-										 uint *modId,
-										 uint *libId,
-										 uint64_t *funcNid)
+bool CSceModuleSystem::decodeEncodedName(std::string const& strEncName,
+										 uint* modId,
+										 uint* libId,
+										 uint64_t* funcNid)
 {
 	bool bRet = false;
 	do
@@ -736,9 +787,9 @@ bool CSceModuleSystem::decodeEncodedName(std::string const &strEncName,
 			break;
 		}
 
-		auto &nModuleId  = *modId;
-		auto &nLibraryId = *libId;
-		auto &nNid       = *funcNid;
+		auto& nModuleId  = *modId;
+		auto& nLibraryId = *libId;
+		auto& nNid       = *funcNid;
 
 		std::vector<std::string> vtNameParts;
 		if (!UtilString::Split(strEncName, '#', vtNameParts))
