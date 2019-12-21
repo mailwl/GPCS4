@@ -114,7 +114,10 @@ int PS4API sceGnmDrawIndirectCountMulti(uint32_t* cmdBuffer, uint32_t numDwords)
 int PS4API sceGnmDrawIndirectMulti(uint32_t* cmdBuffer, uint32_t numDwords);
 
 
-uint32_t PS4API sceGnmDrawInitDefaultHardwareState350(uint32_t* cmdBuffer, uint64_t cmdSize);
+uint32_t PS4API sceGnmDrawInitDefaultHardwareState350(uint32_t* cmdBuffer, uint64_t numDwords);
+
+
+uint32_t PS4API sceGnmDrawInitDefaultHardwareState200(uint32_t* cmdBuffer, uint64_t numDwords);
 
 
 int PS4API sceGnmDrawOpaqueAuto(uint32_t* cmdBuffer, uint32_t numDwords);
@@ -386,5 +389,4 @@ int PS4API sceGnmValidateResetState(void);
 int PS4API sceGnmValidationRegisterMemoryCheckCallback(void);
 
 
-int PS4API sceGnmDrawInitDefaultHardwareState200();
 
