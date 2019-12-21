@@ -13,6 +13,7 @@ static const SCE_EXPORT_FUNCTION g_pSceUserService_libSceUserService_FunctionTab
 	{ 0x8F760CBB531534DA, "sceUserServiceInitialize", (void*)sceUserServiceInitialize },
 	{ 0x6F01634BE6D7F660, "sceUserServiceTerminate", (void*)sceUserServiceTerminate },
 	{ 0xD71C5C3221AED9FA, "sceUserServiceGetUserName", (void*)sceUserServiceGetUserName },
+	{ 0x7cf87298a36f2bf0, "sceUserServiceGetLoginUserIdList", (void*)sceUserServiceGetLoginUserIdList },
 	SCE_FUNCTION_ENTRY_END
 };
 

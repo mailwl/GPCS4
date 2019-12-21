@@ -49,4 +49,13 @@ int PS4API sceUserServiceGetEvent(SceUserServiceEvent* event)
 	return SCE_USER_SERVICE_ERROR_NO_EVENT;
 }
 
+int PS4API sceUserServiceGetLoginUserIdList(SceUserServiceLoginUserIdList* userIdList)
+{
+	LOG_SCE_TRACE("userIdList %p", userIdList);
+	userIdList->userId[0] = 1;
+	userIdList->userId[1] = SCE_USER_SERVICE_USER_ID_INVALID;
+	userIdList->userId[2] = SCE_USER_SERVICE_USER_ID_INVALID;
+	userIdList->userId[3] = SCE_USER_SERVICE_USER_ID_INVALID;
+	return 0;
+}
 

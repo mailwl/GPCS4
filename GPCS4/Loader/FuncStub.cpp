@@ -7,12 +7,13 @@ static void logFunc(const char *log)
 }
 
 // Trap the debugger when an unresolved function is called.
-static void trapDebugger() { 
+static int trapDebugger() { 
 #ifdef GPCS4_WINDOWS
-	//__debugbreak();
+	__debugbreak();
 #else
 	raise(SIGTRAP);
 #endif
+	return -1;
 }
 
 // TODO: For safety sake, all the non-volatile registers should be saved, but I only save

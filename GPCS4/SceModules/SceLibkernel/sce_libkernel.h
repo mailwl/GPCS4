@@ -294,6 +294,9 @@ int PS4API scePthreadRwlockattrInit(ScePthreadRwlockattr *attr);
 ScePthread PS4API scePthreadSelf(void);
 
 
+ScePthread PS4API scek_pthread_self();
+
+
 int PS4API scePthreadSetaffinity(ScePthread thread, const SceKernelCpumask mask);
 
 
@@ -437,7 +440,16 @@ int PS4API scePthreadAttrGet(ScePthread thread, ScePthreadAttr* attr);
 
 int PS4API scePthreadAttrGetaffinity(ScePthread thread, SceKernelCpumask* mask);
 
-//////////////////////////////////////////////////////////////////////////
+
+int PS4API scek_ipmimgr_call(int p1, uint64_t p2, uint32_t* out, uint64_t* p3, int64_t p4, uint64_t p5);
+
+
+int PS4API sceKernelGetProcessType(int pid);
+
+
+void PS4API sceKernelError();
+
+	//////////////////////////////////////////////////////////////////////////
 // library: libSceCoredump
 //////////////////////////////////////////////////////////////////////////
 
@@ -518,9 +530,6 @@ int PS4API scek_pthread_mutexattr_init(void);
 
 
 int PS4API scek_pthread_mutexattr_settype(void);
-
-
-int PS4API scek_pthread_self(void);
 
 
 int PS4API scek_sched_yield(void);

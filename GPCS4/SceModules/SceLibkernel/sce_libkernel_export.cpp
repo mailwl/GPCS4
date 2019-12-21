@@ -143,6 +143,10 @@ static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libkernel_FunctionTable[] = {
 	{ 0xb59638f9264d1610, "msync", (void*)scek_msync },
 	{ 0xc2e0aba081a3b768, "open", (void*)scek_open },
 	{ 0xe9cdeb09513f7d35, "_open", (void*)scek__open },
+	{ 0x128B51F1ADC049FE, "pthread_self", (void*)scek_pthread_self },
+	{ 0x1e4ee21e61b1075f, "ipmimgr_call", (void*)scek_ipmimgr_call },
+	{ 0xfa0f943fc3f27e6a, "sceKernelGetProcessType", (void*)sceKernelGetProcessType },
+	{ 0x0f8ca56b7bf1e2d6, "sceKernelError", (void*)sceKernelError },
 	SCE_FUNCTION_ENTRY_END
 };
 
@@ -173,7 +177,6 @@ static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libScePosix_FunctionTable[] = {
 	{ 0x1C5EE52B8EB1CE36, "pthread_mutexattr_destroy", (void*)scek_pthread_mutexattr_destroy },
 	{ 0x7501D612C26DA04E, "pthread_mutexattr_init", (void*)scek_pthread_mutexattr_init },
 	{ 0x9839A030E19552A8, "pthread_mutexattr_settype", (void*)scek_pthread_mutexattr_settype },
-	{ 0x128B51F1ADC049FE, "pthread_self", (void*)scek_pthread_self },
 	{ 0xE971B8077DCDD3D8, "sched_yield", (void*)scek_sched_yield },
 	{ 0x41CB5E4706EC9D5D, "usleep", (void*)scek_usleep },
 	{ 0x6D8FCF3BA261CE14, "close", (void*)scek_close },

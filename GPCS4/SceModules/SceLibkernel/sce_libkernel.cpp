@@ -366,8 +366,26 @@ int PS4API _is_signal_return(uint64_t param)
 int PS4API scek_msync(void* start, size_t length, int flags)
 {
 #ifdef GPCS4_WINDOWS
-	return 0;
+	return SCE_OK;
 #else
 	return msync(start, length, flags);
 #endif
+}
+
+int PS4API scek_ipmimgr_call(int p1, uint64_t p2, uint32_t* out, uint64_t* p3, int64_t p4, uint64_t p5)
+{
+	LOG_SCE_DUMMY_IMPL();
+	*out = 0;
+	return SCE_OK;
+}
+
+int PS4API sceKernelGetProcessType(int pid)
+{
+	LOG_SCE_DUMMY_IMPL();
+	return SCE_OK;
+}
+
+void PS4API sceKernelError()
+{
+	LOG_FIXME("");
 }

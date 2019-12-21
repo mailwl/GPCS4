@@ -29,7 +29,7 @@ bool CEmulator::RegisterModules()
 		}
 
 		//REGISTER_MODULE(g_ExpModuleSceAjm);
-		//REGISTER_MODULE(g_ExpModuleSceAppContentUtil);
+		REGISTER_MODULE(g_ExpModuleSceAppContentUtil);
 		//REGISTER_MODULE(g_ExpModuleSceAudio3d);
 		REGISTER_MODULE(g_ExpModuleSceAudioOut);
 		REGISTER_MODULE(g_ExpModuleSceCommonDialog);

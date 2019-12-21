@@ -147,14 +147,6 @@ int PS4API scek_pthread_mutexattr_settype(void)
 	return SCE_OK;
 }
 
-
-int PS4API scek_pthread_self(void)
-{
-	LOG_FIXME("Not implemented");
-	return SCE_OK;
-}
-
-
 int PS4API scek_pthread_setschedparam(void)
 {
 	LOG_FIXME("Not implemented");
@@ -173,4 +165,9 @@ int PS4API scek_pthread_key_create(void)
 {
 	LOG_FIXME("Not implemented");
 	return SCE_OK;
+}
+
+ScePthread PS4API scek_pthread_self()
+{
+	return scePthreadSelf();
 }
