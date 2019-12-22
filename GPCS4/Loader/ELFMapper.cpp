@@ -315,8 +315,8 @@ bool ELFMapper::parseSymbols()
 		{
 		case STB_LOCAL:
 		{
-			LOG_DEBUG("%s symbol: %s BINDING: STB_LOCAL VAL: %d", isDef, name,
-					  symbol.st_value);
+			//LOG_DEBUG("%s symbol: %s BINDING: STB_LOCAL VAL: %d", isDef, name,
+			//		  symbol.st_value);
 			void* addr = m_moduleData->m_mappedMemory.get() + symbol.st_value;
 
 			si.binding = SymbolInfo::Binding::LOCAL;
@@ -327,8 +327,8 @@ bool ELFMapper::parseSymbols()
 
 		case STB_GLOBAL:
 		{
-			LOG_DEBUG("%s symbol: %s BINDING: STB_GLOBAL VAL: %d", isDef, name,
-					  symbol.st_value);
+			//LOG_DEBUG("%s symbol: %s BINDING: STB_GLOBAL VAL: %d", isDef, name,
+			//		  symbol.st_value);
 
 			si.binding = SymbolInfo::Binding::GLOBAL;
 			void* addr = nullptr;
@@ -366,8 +366,8 @@ bool ELFMapper::parseSymbols()
 		// TODO: merge this branch with STB_GLOBAL
 		case STB_WEAK:
 		{
-			LOG_DEBUG("%s symbol: %s BINDING: STB_WEAK VAL: %d", isDef, name,
-					  symbol.st_value);
+			//LOG_DEBUG("%s symbol: %s BINDING: STB_WEAK VAL: %d", isDef, name,
+			//		  symbol.st_value);
 
 			si.binding = SymbolInfo::Binding::WEAK;
 			void* addr = nullptr;

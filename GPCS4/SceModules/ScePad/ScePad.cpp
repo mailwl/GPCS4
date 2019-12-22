@@ -68,6 +68,9 @@ int ScePad::read(ScePadData* data, int32_t num)
 
 int ScePad::readState(ScePadData* data)
 {
+	//data->connected      = true;
+	//data->connectedCount = 1;
+	//data->buttons        = SCE_PAD_BUTTON_CROSS;
 	return 0;
 }
 
