@@ -18,5 +18,9 @@ int PS4API sceCommonDialogInitialize(void)
 }
 
 
-
+bool PS4API sceCommonDialogIsUsed()
+{
+	LOG_FIXME("Not implemented");
+	return true;
+}
 

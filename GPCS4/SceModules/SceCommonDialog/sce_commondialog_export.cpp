@@ -9,6 +9,7 @@
 static const SCE_EXPORT_FUNCTION g_pSceCommonDialog_libSceCommonDialog_FunctionTable[] =
 {
 	{ 0xBA85292C6364CA09, "sceCommonDialogInitialize", (void*)sceCommonDialogInitialize },
+	{ 0x050ded7b2d099903, "sceCommonDialogIsUsed", (void*)sceCommonDialogIsUsed },
 	SCE_FUNCTION_ENTRY_END
 };
 

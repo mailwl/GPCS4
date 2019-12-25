@@ -136,7 +136,7 @@ static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libkernel_FunctionTable[] = {
 	{ 0x1E82D558D6A70417, "getpid", (void*)scek_getpid },
 	{ 0x7BAA2F068F59BC97, "getppid", (void*)scek_getppid },
 	{ 0x5644c0b2b643709d, "sigfillset", (void*)scek_sigfillset },
-	{ 0x68f732a6d6ce899b, "sigprocmask", (void*)scek_sigprocmask },
+	{ 0xeb1569cb415dabe2, "sigprocmask", (void*)scek_sigprocmask },
 	{ 0x93e017aaedbf7817, "getpagesize", (void*)scek_getpagesize },
 	{ 0x04f13db3dbd0417a, "mmap", (void*)scek_mmap },
 	{ 0x72b6f98fb9a49357, "_is_signal_return", (void*)_is_signal_return },
@@ -147,6 +147,14 @@ static const SCE_EXPORT_FUNCTION g_pSceLibkernel_libkernel_FunctionTable[] = {
 	{ 0x1e4ee21e61b1075f, "ipmimgr_call", (void*)scek_ipmimgr_call },
 	{ 0xfa0f943fc3f27e6a, "sceKernelGetProcessType", (void*)sceKernelGetProcessType },
 	{ 0x0f8ca56b7bf1e2d6, "sceKernelError", (void*)sceKernelError },
+	{ 0xacd856cfe96f38c5, "_sceKernelSetThreadDtors", (void*)_sceKernelSetThreadDtors },
+	{ 0xa41ff2199da743da, "_sceKernelSetThreadAtexitCount", (void*)_sceKernelSetThreadAtexitCount },
+	{ 0x5a109cd70dc48522, "_sceKernelSetThreadAtexitReport", (void*)_sceKernelSetThreadAtexitReport },
+	{ 0xecdc2082b589e5c0, "__sys_regmgr_call", (void*)__sys_regmgr_call },
+	{ 0xcec4ef8420eb3a34, "__sys_netcontrol", (void*)__sys_netcontrol },
+	{ 0x2467d330139d509a, "sceKernelGetFsSandboxRandomWord", (void*)sceKernelGetFsSandboxRandomWord },
+	{ 0x94B313F6F240724D, "clock_gettime", (void*)scek_clock_gettime },
+	{ 0x41cb5e4706ec9d5d, "usleep", (void*)scek_usleep },
 	SCE_FUNCTION_ENTRY_END
 };
 

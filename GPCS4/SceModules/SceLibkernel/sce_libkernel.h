@@ -449,6 +449,25 @@ int PS4API sceKernelGetProcessType(int pid);
 
 void PS4API sceKernelError();
 
+
+int PS4API _sceKernelSetThreadDtors();
+
+
+int PS4API _sceKernelSetThreadAtexitCount();
+
+
+int PS4API _sceKernelSetThreadAtexitReport();
+
+
+int PS4API __sys_regmgr_call();
+
+
+int PS4API __sys_netcontrol();
+
+
+int PS4API sceKernelGetFsSandboxRandomWord();
+
+
 	//////////////////////////////////////////////////////////////////////////
 // library: libSceCoredump
 //////////////////////////////////////////////////////////////////////////

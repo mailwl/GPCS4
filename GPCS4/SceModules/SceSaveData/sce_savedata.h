@@ -67,4 +67,13 @@ int PS4API sceSaveDataSetupSaveDataMemory2(void);
 int PS4API sceSaveDataSyncSaveDataMemory(void);
 
 
+int PS4API sceSaveDataInitialize(void);
 
+
+int PS4API sceSaveDataSetupSaveDataMemory(SceUserServiceUserId userId, uint64_t p1, uint64_t p2);
+
+
+int PS4API sceSaveDataGetSaveDataMemory(SceUserServiceUserId userId, void* mem, size_t size, int p2);
+
+
+int PS4API sceSaveDataSetSaveDataMemory(SceUserServiceUserId userId, void* p1, size_t size, uint64_t p2);

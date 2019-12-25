@@ -28,5 +28,7 @@ extern const SCE_EXPORT_MODULE g_ExpModuleSceCommonDialog;
 int PS4API sceCommonDialogInitialize(void);
 
 
+bool PS4API sceCommonDialogIsUsed();
+
 
 

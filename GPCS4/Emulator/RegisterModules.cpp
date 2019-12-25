@@ -47,7 +47,7 @@ bool CEmulator::RegisterModules()
 		REGISTER_MODULE(g_ExpModuleSceLibkernel);
 		//REGISTER_MODULE(g_ExpModuleSceMouse);
 		//REGISTER_MODULE(g_ExpModuleSceMsgDialog);
-		//REGISTER_MODULE(g_ExpModuleSceNet);
+		REGISTER_MODULE(g_ExpModuleSceNet);
 		//REGISTER_MODULE(g_ExpModuleSceNetCtl);
 		//REGISTER_MODULE(g_ExpModuleSceNpCommerce);
 		//REGISTER_MODULE(g_ExpModuleSceNpCommon);

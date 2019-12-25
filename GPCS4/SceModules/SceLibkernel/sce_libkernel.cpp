@@ -4,6 +4,8 @@
 
 #include "Platform/PlatformUtils.h"
 
+#include <time.h>
+
 #ifdef GPCS4_WINDOWS
 #include <Windows.h>
 #endif
@@ -155,19 +157,19 @@ int PS4API sceKernelIsAddressSanitizerEnabled()
 
 struct proc7
 {
-	uint64_t size{ 0x40 };  // 00
-	uint64_t p1{};          // 01
-	uint64_t p2{};          // 02
-	uint64_t p3{};          // 03
-	uint64_t p4{};          // 04
-	uint64_t p5{};          // 05
-	uint64_t p6{};          // 06
-	uint64_t p7{};          // 07
-	uint64_t p8{};          // 08
-	uint64_t p9{};          // 09
-	uint64_t p10{};         // 10
-	uint64_t p11{};         // 11
-	uint64_t* p12{nullptr}; // 12
+	uint64_t size{ 0x40 };     // 00
+	uint64_t p1{};             // 01
+	uint64_t p2{};             // 02
+	uint64_t p3{};             // 03
+	uint64_t p4{};             // 04
+	uint64_t p5{};             // 05
+	uint64_t p6{};             // 06
+	uint64_t p7{};             // 07
+	uint64_t p8{};             // 08
+	uint64_t p9{};             // 09
+	uint64_t p10{};            // 10
+	uint64_t p11{};            // 11
+	uint64_t* p12{ nullptr };  // 12
 } p7;
 
 struct ProcParam
@@ -320,13 +322,11 @@ int PS4API scek_getppid(void)
 	return pid;
 }
 
-
 int PS4API scek_sigfillset(sce_sigset_t* set)
 {
 	LOG_SCE_DUMMY_IMPL();
 	return SCE_OK;
 }
-
 
 int PS4API scek_sigprocmask(int how, const sce_sigset_t* set, sce_sigset_t* old_set)
 {
@@ -334,13 +334,11 @@ int PS4API scek_sigprocmask(int how, const sce_sigset_t* set, sce_sigset_t* old_
 	return SCE_OK;
 }
 
-
 int PS4API scek_getpagesize()
 {
 	LOG_SCE_DUMMY_IMPL();
 	return 4096;
 }
-
 
 void* PS4API scek_mmap(void* start, size_t length, int prot, int flags, int fd, off_t offset)
 {
@@ -355,13 +353,11 @@ void* PS4API scek_mmap(void* start, size_t length, int prot, int flags, int fd, 
 #endif
 }
 
-
 int PS4API _is_signal_return(uint64_t param)
 {
 	LOG_SCE_DUMMY_IMPL();
 	return SCE_OK;
 }
-
 
 int PS4API scek_msync(void* start, size_t length, int flags)
 {
@@ -387,5 +383,43 @@ int PS4API sceKernelGetProcessType(int pid)
 
 void PS4API sceKernelError()
 {
-	LOG_FIXME("");
+	LOG_FIXME("Not implemented");
 }
+
+int PS4API _sceKernelSetThreadDtors()
+{
+	LOG_FIXME("Not implemented");
+	return SCE_OK;
+}
+
+int PS4API _sceKernelSetThreadAtexitCount()
+{
+	LOG_FIXME("Not implemented");
+	return SCE_OK;
+}
+
+int PS4API _sceKernelSetThreadAtexitReport()
+{
+	LOG_FIXME("Not implemented");
+	return SCE_OK;
+}
+
+int PS4API __sys_regmgr_call()
+{
+	LOG_FIXME("Not implemented");
+	return SCE_OK;
+}
+
+int PS4API __sys_netcontrol()
+{
+	LOG_FIXME("Not implemented");
+	return SCE_OK;
+}
+
+int PS4API sceKernelGetFsSandboxRandomWord()
+{
+	LOG_FIXME("Not implemented");
+	return SCE_OK;
+}
+
+

@@ -1,11 +1,10 @@
 #include "ScePad.h"
 
+#include <ctime>
 
 SceInputController::~SceInputController()
 {
 }
-
-
 
 SceGamepad::SceGamepad()
 {
@@ -15,12 +14,9 @@ SceGamepad::~SceGamepad()
 {
 }
 
-
 int SceGamepad::read(ScePadData* data, int32_t num)
 {
-	
 }
-
 
 SceKeyboard::SceKeyboard()
 {
@@ -32,11 +28,9 @@ SceKeyboard::~SceKeyboard()
 
 int SceKeyboard::read(ScePadData* data, int32_t num)
 {
-	
 }
 
-
-ScePad::ScePad(SceUserServiceUserId userId, int32_t type, int32_t index):
+ScePad::ScePad(SceUserServiceUserId userId, int32_t type, int32_t index) :
 	m_userId(userId),
 	m_type(type),
 	m_index(index)
@@ -68,9 +62,9 @@ int ScePad::read(ScePadData* data, int32_t num)
 
 int ScePad::readState(ScePadData* data)
 {
-	//data->connected      = true;
-	//data->connectedCount = 1;
+	data->connected      = true;
+	data->connectedCount = 1;
 	//data->buttons        = SCE_PAD_BUTTON_CROSS;
+	data->timestamp = std::time(NULL);
 	return 0;
 }
-

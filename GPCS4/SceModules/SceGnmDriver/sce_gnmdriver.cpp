@@ -501,10 +501,3 @@ int PS4API sceGnmValidationRegisterMemoryCheckCallback(void)
 }
 
 
-int PS4API sceGnmDrawInitDefaultHardwareState200()
-{
-	LOG_FIXME("Not implemented");
-	return SCE_OK;
-}
-
-

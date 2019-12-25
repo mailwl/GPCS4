@@ -74,6 +74,19 @@ int PS4API sceGnmSetCsShaderWithModifier(uint32_t* cmdBuffer, uint32_t numDwords
 	return SCE_OK;
 }
 
+int PS4API sceGnmSetCsShader(uint32_t* cmdBuffer, uint32_t numDwords,
+										 const pssl::CsStageRegisters* csRegs)
+{
+	LOG_SCE_GRAPHIC("cmd %p numdw %d cs %p", cmdBuffer, numDwords, csRegs);
+	const uint32_t paramSize = sizeof(GnmCmdCSShader) / sizeof(uint32_t);
+	assert(paramSize == numDwords);
+	GnmCmdCSShader* param = (GnmCmdCSShader*)cmdBuffer;
+	param->opcode         = PM4_HEADER_BUILD(paramSize, IT_GNM_PRIVATE, OP_PRIV_SET_CS_SHADER);
+	param->modifier       = 0;
+	memcpy(&param->csRegs, csRegs, sizeof(pssl::CsStageRegisters));
+	memset(param->reserved, 0, sizeof(param->reserved) * sizeof(uint32_t));
+	return SCE_OK;
+}
 
 int PS4API sceGnmDispatchDirect(uint32_t* cmdBuffer, uint32_t numDwords, 
 	uint32_t threadGroupX, uint32_t threadGroupY, uint32_t threadGroupZ, uint32_t pred)

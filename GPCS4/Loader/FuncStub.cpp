@@ -11,7 +11,7 @@ static int trapDebugger() {
 #ifdef GPCS4_WINDOWS
 	__debugbreak();
 #else
-	raise(SIGTRAP);
+	//raise(SIGTRAP);
 #endif
 	return -1;
 }
