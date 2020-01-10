@@ -9,7 +9,7 @@ static void logFunc(const char *log)
 // Trap the debugger when an unresolved function is called.
 static int trapDebugger() { 
 #ifdef GPCS4_WINDOWS
-	__debugbreak();
+	//__debugbreak();
 #else
 	//raise(SIGTRAP);
 #endif
