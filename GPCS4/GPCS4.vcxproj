@@ -227,6 +227,8 @@
     <ClInclude Include="SceModules\ScePad\sce_pad_types.h" />
     <ClInclude Include="SceModules\ScePlayGoDialog\sce_playgodialog.h" />
     <ClInclude Include="SceModules\ScePlayGo\sce_playgo.h" />
+    <ClInclude Include="SceModules\ScePngDec\sce_pngdec.h" />
+    <ClInclude Include="SceModules\ScePngDec\sce_pngdec_types.h" />
     <ClInclude Include="SceModules\SceRtc\sce_rtc.h" />
     <ClInclude Include="SceModules\SceRudp\sce_rudp.h" />
     <ClInclude Include="SceModules\SceSaveDataDialog\sce_savedatadialog.h" />
@@ -463,6 +465,8 @@
     <ClCompile Include="SceModules\ScePlayGoDialog\sce_playgodialog_export.cpp" />
     <ClCompile Include="SceModules\ScePlayGo\sce_playgo.cpp" />
     <ClCompile Include="SceModules\ScePlayGo\sce_playgo_export.cpp" />
+    <ClCompile Include="SceModules\ScePngDec\sce_pnddec_export.cpp" />
+    <ClCompile Include="SceModules\ScePngDec\sce_pngdec.cpp" />
     <ClCompile Include="SceModules\SceRtc\sce_rtc.cpp" />
     <ClCompile Include="SceModules\SceRtc\sce_rtc_export.cpp" />
     <ClCompile Include="SceModules\SceRudp\sce_rudp.cpp" />

@@ -396,8 +396,8 @@ void GnmCommandBufferDraw::drawIndex(uint32_t indexCount, const void *indexAddr)
 
 void GnmCommandBufferDraw::drawIndexAuto(uint32_t indexCount, DrawModifier modifier)
 {
-	commitVsStage();
-	commitPsStage();
+	//commitVsStage();
+	//commitPsStage();
 
 	// TODO:
 	// This is a dummy state.

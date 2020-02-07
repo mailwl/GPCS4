@@ -31,6 +31,7 @@ private:
 
 	bool registerLibC(CSceModuleSystem* pModuleSystem);
 	bool registerLibKernel(CSceModuleSystem* pModuleSystem);
+	bool registerPngDec(CSceModuleSystem* pModuleSystem);
 
 	static void PS4API LastExitHandler(void);
 private:

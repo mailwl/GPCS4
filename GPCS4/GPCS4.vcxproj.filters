@@ -182,6 +182,9 @@
     <Filter Include="Source Files\Emulator">
       <UniqueIdentifier>{9a707c88-79d8-4c96-ad6c-658b1e5f496c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceModules\ScePngDec">
+      <UniqueIdentifier>{52f2042d-5513-4bc1-b78d-20a0f588b4aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceModules\SceLibc\sce_libc.h">
@@ -904,6 +907,12 @@
     <ClInclude Include="Common\GPCS4Decoration.h">
       <Filter>Source Files\Common</Filter>
     </ClInclude>
+    <ClInclude Include="SceModules\ScePngDec\sce_pngdec.h">
+      <Filter>SceModules\ScePngDec</Filter>
+    </ClInclude>
+    <ClInclude Include="SceModules\ScePngDec\sce_pngdec_types.h">
+      <Filter>SceModules\ScePngDec</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader\EbootObject.cpp">
@@ -1577,6 +1586,12 @@
     </ClCompile>
     <ClCompile Include="Algorithm\MurmurHash2.cpp">
       <Filter>Source Files\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="SceModules\ScePngDec\sce_pnddec_export.cpp">
+      <Filter>SceModules\ScePngDec</Filter>
+    </ClCompile>
+    <ClCompile Include="SceModules\ScePngDec\sce_pngdec.cpp">
+      <Filter>SceModules\ScePngDec</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

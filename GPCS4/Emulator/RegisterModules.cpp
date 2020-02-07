@@ -114,6 +114,25 @@ bool CEmulator::registerLibKernel(CSceModuleSystem* pModuleSystem)
 	return ret;
 }
 
+bool CEmulator::registerPngDec(CSceModuleSystem* pModuleSystem)
+{
+	bool ret = false;
+	do
+	{
+		if (!pModuleSystem)
+		{
+			break;
+		}
+
+		BUILTIN_LIST_BEGIN("libScePngDec", "libScePngDec");
+		USE_BUILTIN_FUNCTION("libScePngDec", "libScePngDec", 0x582DB5E830F7125E);  // scePngDecDecode
+		BUILTIN_LIST_END();
+
+		ret = true;
+	} while (false);
+	return ret;
+}
+
 bool CEmulator::registerModules()
 {
 	bool bRet = false;
@@ -159,6 +178,7 @@ bool CEmulator::registerModules()
 		REGISTER_MODULE(g_ExpModuleScePad);
 		REGISTER_MODULE(g_ExpModuleScePlayGo);
 		REGISTER_MODULE(g_ExpModuleScePlayGoDialog);
+		REGISTER_MODULE(g_ExpModuleScePngDec);
 		REGISTER_MODULE(g_ExpModuleSceRtc);
 		REGISTER_MODULE(g_ExpModuleSceRudp);
 		REGISTER_MODULE(g_ExpModuleSceSaveData);
@@ -182,6 +202,11 @@ bool CEmulator::registerModules()
 		}
 
 		if (!registerLibC(pModuleSystem))
+		{
+			break;
+		}
+
+		if (!registerPngDec(pModuleSystem))
 		{
 			break;
 		}

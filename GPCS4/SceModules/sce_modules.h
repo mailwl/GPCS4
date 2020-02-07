@@ -37,6 +37,7 @@
 #include "ScePad/sce_pad.h"
 #include "ScePlayGo/sce_playgo.h"
 #include "ScePlayGoDialog/sce_playgodialog.h"
+#include "ScePngDec/sce_pngdec.h"
 #include "SceRtc/sce_rtc.h"
 #include "SceRudp/sce_rudp.h"
 #include "SceSaveData/sce_savedata.h"
