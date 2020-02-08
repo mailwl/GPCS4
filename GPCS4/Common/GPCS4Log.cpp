@@ -55,10 +55,10 @@ void initSpdLog()
 	file_sink->set_level(spdlog::level::trace);
 	file_sink->set_pattern("[%t][%^%l%$]%v");
 
-	//g_logger.reset(new spdlog::logger("GPCS4", { console_sink, msvc_sink }));
+	g_logger.reset(new spdlog::logger("GPCS4", { console_sink }));
 	//g_logger.reset(new spdlog::logger("GPCS4", { msvc_sink, file_sink, console_sink }));
-	g_logger.reset(new spdlog::logger("GPCS4", { msvc_sink }));
-	g_logger->set_level(spdlog::level::trace);  // message showing filter
+	//g_logger.reset(new spdlog::logger("GPCS4", { msvc_sink }));
+	g_logger->set_level(spdlog::level::info);  // message showing filter
 
 	//g_logger->flush_on(spdlog::level::trace); // I/O cost
 }

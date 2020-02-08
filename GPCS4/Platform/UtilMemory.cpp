@@ -95,25 +95,27 @@ inline uint32_t GetTypeFlag(uint32_t nOldFlag)
 
 void* VMMapAligned(size_t nSize, uint32_t nProtectFlag, int align)
 {
-	void* pAddr = NULL;
-	void* pAlignAddr = NULL;
-	size_t realSize = nSize;
+	void* pAlignedAddr = NULL;
 	do
 	{
-		realSize = ((uintptr_t)nSize + (align - 1)) & ~(align - 1);
-		pAddr = VirtualAlloc(nullptr, realSize, MEM_RESERVE | MEM_COMMIT, GetProtectFlag(nProtectFlag));
-		pAlignAddr = (void*)(((uintptr_t)pAddr + (align - 1)) & ~(align - 1));
+		void* pAddr = VirtualAlloc(nullptr, nSize, MEM_RESERVE | MEM_COMMIT, GetProtectFlag(nProtectFlag));
+		uintptr_t temp = ((uintptr_t)pAddr + (align - 1)) & ~(align - 1);
+		do {
+			pAlignedAddr = VirtualAlloc((void*)temp, nSize, MEM_RESERVE | MEM_COMMIT,
+				GetProtectFlag(nProtectFlag));
+			temp += align;
+		} while (pAlignedAddr == nullptr);
+		VirtualFree(pAddr, nSize, MEM_RELEASE);
 
 		MemoryRange range
 		{
-			reinterpret_cast<uintptr_t>(pAddr),
-			reinterpret_cast<uintptr_t>(pAddr) + realSize,
+			reinterpret_cast<uintptr_t>(pAlignedAddr),
+			reinterpret_cast<uintptr_t>(pAlignedAddr) + nSize,
 			nProtectFlag
 		};
-
 		g_memRanges.emplace_back(range);
 	} while (false);
-	return pAlignAddr;
+	return pAlignedAddr;
 }
 
 void* VMMapFlexible(void *addrIn, size_t nSize, uint32_t nProtectFlag)
